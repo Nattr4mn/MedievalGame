@@ -1,11 +1,14 @@
 fileFormatVersion: 2
 guid: 950af3faa34440642824d41115ca9522
 ModelImporter:
-  serializedVersion: 20200
+  serializedVersion: 21100
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
     second: Take 001
+  - first:
+      74: -7841759103181896928
+    second: Tree_temp_climate_001|Tree_temp_climate_001|Tree_temp_climate_001|Tree_temp_climate_0
   externalObjects: {}
   materials:
     materialImportMode: 2

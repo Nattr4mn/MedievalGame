@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class GardenController : MonoBehaviour
 {
+    [SerializeField] private ResourcePanel resourcePanel;
     [SerializeField] private float growthTime = 10f;
     [SerializeField] private float irrigationTime = 5f;
     private bool can—ollect = false;
+    private bool isSown = false;
     private bool isProcessBarVisible = false;
     private float irrigationLevel = 0;
     private float growthRate = 0;
+    private string currentFarmCrop;
 
     private void Update()
     {
@@ -22,23 +25,39 @@ public class GardenController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.name == PlayerController.Instance.name)
+        if(other.name == Player.Instance.name)
         {
             isProcessBarVisible = true;
             ProcessGrowthBar(true);
             UIManager.Instance.SliderSetPosition(gameObject.transform.position);
-            ControlManager.Instance.actionButtonEvent += Gathering;
+            if (can—ollect)
+                UIManager.Instance.actionButtonEvent += Gathering;
+            
+            if(!isSown)
+                UIManager.Instance.actionButtonEvent += SeedsPanel;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.name == PlayerController.Instance.name)
+        if (other.name == Player.Instance.name)
         {
             isProcessBarVisible = false;
             ProcessGrowthBar(false);
-            ControlManager.Instance.actionButtonEvent -= Gathering;
+            if (can—ollect)
+                UIManager.Instance.actionButtonEvent -= Gathering;
+
+            if (!isSown)
+                UIManager.Instance.actionButtonEvent -= SeedsPanel;
         }
+    }
+
+    private void SeedsPanel()
+    {
+        UIManager.Instance.actionButtonEvent += Planting;
+        resourcePanel.Init(PlayerResources.Instance.SeedsList);
+        resourcePanel.gameObject.SetActive(true);
+        UIManager.Instance.ActionButton.gameObject.SetActive(false);
     }
 
     private void ProcessGrowthBar(bool state)
@@ -47,40 +66,55 @@ public class GardenController : MonoBehaviour
         UIManager.Instance.irrigationLevelSlider.gameObject.SetActive(state); //fix
     }
 
-    private void Gathering()
+    public void Gathering()
     {
-        irrigationLevel = 1;
+        StartCoroutine(Processing());
+        Player.Instance.isWorking = true;
+        transform.Find("Crops").transform.Find(currentFarmCrop).gameObject.SetActive(false);
+        irrigationLevel = 0;
         growthRate = 0;
-        StartCoroutine(WaitAnimation("gathering"));
-        ControlManager.Instance.actionButtonEvent -= Gathering;
-        StartCoroutine(ProcessOfGrowth());
-        Planting();
+        can—ollect = false;
+        isSown = false;
+        PlayerResources.Instance.ReplenishStocks(currentFarmCrop, Random.Range(5, 10));
+        Player.Instance.Animator.SetBool("isRunning", false);
+        Player.Instance.Animator.SetTrigger("gathering");
+        UIManager.Instance.actionButtonEvent -= Gathering;
     }
 
-    private void Planting()
+
+    public void Planting()
     {
-        transform.Find("Crops").transform.Find("Pumpkin").gameObject.SetActive(true);
+        currentFarmCrop = PlayerResources.Instance.currentFarmingCrop;
+        UIManager.Instance.actionButtonEvent -= SeedsPanel;
+        isSown = true;
+        UIManager.Instance.ActionButton.gameObject.SetActive(true);
+        Player.Instance.Animator.SetBool("isRunning", false);
+        Player.Instance.Animator.SetTrigger("gathering");
+        StartCoroutine(ProcessOfGrowth());
+        UIManager.Instance.actionButtonEvent -= Planting;
     }
-
 
     private IEnumerator ProcessOfGrowth()
     {
-        while(irrigationLevel != 0 && growthRate != 1)
+
+        StartCoroutine(Processing());
+        Player.Instance.isWorking = true;
+        irrigationLevel = 1;
+        growthRate = 0;
+        transform.Find("Crops").transform.Find(currentFarmCrop).gameObject.SetActive(true);
+
+        while (irrigationLevel != 0 && growthRate != 1)
         {
-            irrigationLevel -= 1/(irrigationTime * 60f);
-            growthRate += 1 / (growthTime * 60f);
+            irrigationLevel -= 1 /(irrigationTime * 1f);
+            growthRate += 1 / (growthTime * 1f);
             yield return new WaitForSeconds(1f);
         }
+        can—ollect = true;
     }
 
-    private IEnumerator WaitAnimation(string animationName)
+    private IEnumerator Processing()
     {
-
-        PlayerController.Instance.isWorking = true;
-        PlayerController.Instance.Animator.SetBool(animationName, true);
-        var animatorStateInfo = PlayerController.Instance.Animator.GetCurrentAnimatorStateInfo(0);
-        yield return new WaitForSeconds(animatorStateInfo.length);
-        PlayerController.Instance.Animator.SetBool(animationName, false);
-        PlayerController.Instance.isWorking = false;
+        yield return new WaitForSeconds(3f);
+        Player.Instance.isWorking = false;
     }
 }
