@@ -27,6 +27,7 @@ public class GardenController : MonoBehaviour
     {
         if(other.name == Player.Instance.name)
         {
+            print(can—ollect);
             isProcessBarVisible = true;
             ProcessGrowthBar(true);
             UIManager.Instance.SliderSetPosition(gameObject.transform.position);
@@ -54,6 +55,7 @@ public class GardenController : MonoBehaviour
 
     private void SeedsPanel()
     {
+        UIManager.Instance.actionButtonEvent -= SeedsPanel;
         UIManager.Instance.actionButtonEvent += Planting;
         resourcePanel.Init(PlayerResources.Instance.SeedsList);
         resourcePanel.gameObject.SetActive(true);
@@ -84,14 +86,13 @@ public class GardenController : MonoBehaviour
 
     public void Planting()
     {
+        UIManager.Instance.actionButtonEvent -= Planting;
         currentFarmCrop = PlayerResources.Instance.currentFarmingCrop;
-        UIManager.Instance.actionButtonEvent -= SeedsPanel;
         isSown = true;
         UIManager.Instance.ActionButton.gameObject.SetActive(true);
         Player.Instance.Animator.SetBool("isRunning", false);
         Player.Instance.Animator.SetTrigger("gathering");
         StartCoroutine(ProcessOfGrowth());
-        UIManager.Instance.actionButtonEvent -= Planting;
     }
 
     private IEnumerator ProcessOfGrowth()
@@ -103,12 +104,13 @@ public class GardenController : MonoBehaviour
         growthRate = 0;
         transform.Find("Crops").transform.Find(currentFarmCrop).gameObject.SetActive(true);
 
-        while (irrigationLevel != 0 && growthRate != 1)
+        while (growthRate < 1)
         {
             irrigationLevel -= 1 /(irrigationTime * 1f);
             growthRate += 1 / (growthTime * 1f);
             yield return new WaitForSeconds(1f);
         }
+        print("Tyt");
         can—ollect = true;
     }
 
