@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCharacteristics : Loader<PlayerCharacteristics>
+public class PlayerCharacteristics : MonoBehaviour
 {
     public float Charisma => charisma;
     public float Endurance => endurance;

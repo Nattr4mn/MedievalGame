@@ -18,6 +18,6 @@ public class Well : MonoBehaviour
     {
         Player.Instance.Animator.SetBool("isRunning", false);
         Player.Instance.Animator.SetTrigger("pickup");
-        PlayerCharacteristics.Instance.ReplenishingThirst(2f);
+        Player.Instance.Characteristics.ReplenishingThirst(2f);
     }
 }

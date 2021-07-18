@@ -17,7 +17,7 @@ public class ResourceLine : MonoBehaviour
     public void ClickButton()
     {
         itemName = itemName.Replace("Seed", "");
-        PlayerResources.Instance.currentFarmingCrop = itemName;
+        Player.Instance.Resources.currentFarmingCrop = itemName;
         UIManager.Instance.Action();
         FindObjectOfType<ResourcePanel>().gameObject.SetActive(false);
     }

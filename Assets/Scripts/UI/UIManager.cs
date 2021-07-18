@@ -14,6 +14,7 @@ public class UIManager : Loader<UIManager>
     public Slider hungerSlider;
     public delegate void OnAction();
     public event OnAction actionButtonEvent;
+    public List<Window> Windows = new List<Window>();
 
     [SerializeField] private Joystick _joystick;
     [SerializeField] private Button _action;

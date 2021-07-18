@@ -17,7 +17,7 @@ public class Shed : MonoBehaviour
 
     public void ResourcePanel()
     {
-        resourcePanel.Init(PlayerResources.Instance.ItemList);
+        resourcePanel.Init(Player.Instance.Resources.ItemList);
         StartCoroutine(PlayingAnimation());
         UIManager.Instance.ActionButton.gameObject.SetActive(true);
         resourcePanel.gameObject.SetActive(true);

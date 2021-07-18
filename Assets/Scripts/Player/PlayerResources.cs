@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerResources : Loader<PlayerResources>
+public class PlayerResources : MonoBehaviour
 {
     public List<AssetItem> ItemList => itemList;
     public List<AssetItem> SeedsList => seedsList;
@@ -10,12 +10,16 @@ public class PlayerResources : Loader<PlayerResources>
 
     public string currentFarmingCrop;
 
-    [SerializeField] private List<AssetItem> itemList;
-    [SerializeField] private List<AssetItem> seedsList;
-    
-
+    private List<AssetItem> itemList;
+    private List<AssetItem> seedsList;
     private int gold = 0;
 
+    public void Init(List<AssetItem> itemList, List<AssetItem> seedsList)
+    {
+        this.itemList = itemList;
+        this.seedsList = seedsList;
+
+    }
 
     public void ReplenishStocks(string name, int count)
     {

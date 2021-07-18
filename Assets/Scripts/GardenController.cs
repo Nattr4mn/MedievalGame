@@ -57,7 +57,7 @@ public class GardenController : MonoBehaviour
     {
         UIManager.Instance.actionButtonEvent -= SeedsPanel;
         UIManager.Instance.actionButtonEvent += Planting;
-        resourcePanel.Init(PlayerResources.Instance.SeedsList);
+        resourcePanel.Init(Player.Instance.Resources.SeedsList);
         resourcePanel.gameObject.SetActive(true);
         UIManager.Instance.ActionButton.gameObject.SetActive(false);
     }
@@ -77,7 +77,7 @@ public class GardenController : MonoBehaviour
         growthRate = 0;
         can—ollect = false;
         isSown = false;
-        PlayerResources.Instance.ReplenishStocks(currentFarmCrop, Random.Range(5, 10));
+        Player.Instance.Resources.ReplenishStocks(currentFarmCrop, Random.Range(5, 10));
         Player.Instance.Animator.SetBool("isRunning", false);
         Player.Instance.Animator.SetTrigger("gathering");
         UIManager.Instance.actionButtonEvent -= Gathering;
@@ -87,7 +87,7 @@ public class GardenController : MonoBehaviour
     public void Planting()
     {
         UIManager.Instance.actionButtonEvent -= Planting;
-        currentFarmCrop = PlayerResources.Instance.currentFarmingCrop;
+        currentFarmCrop = Player.Instance.Resources.currentFarmingCrop;
         isSown = true;
         UIManager.Instance.ActionButton.gameObject.SetActive(true);
         Player.Instance.Animator.SetBool("isRunning", false);
