@@ -5,19 +5,21 @@ using UnityEngine;
 public class Shed : MonoBehaviour
 {
     [SerializeField] private ResourcePanel resourcePanel;
+    private GameObject _player;
     private void OnTriggerEnter(Collider other)
     {
-        UIManager.Instance.actionButtonEvent += ResourcePanel;
+        _player = other.gameObject;
+        UIManager.Instance.ActionEvent += ResourcePanel;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        UIManager.Instance.actionButtonEvent -= ResourcePanel;
+        UIManager.Instance.ActionEvent -= ResourcePanel;
     }
 
     public void ResourcePanel()
     {
-        resourcePanel.Init(Player.Instance.Resources.ItemList);
+        //resourcePanel.Init(Player.Instance.Resources.ItemList);
         StartCoroutine(PlayingAnimation());
         UIManager.Instance.ActionButton.gameObject.SetActive(true);
         resourcePanel.gameObject.SetActive(true);
@@ -25,10 +27,10 @@ public class Shed : MonoBehaviour
 
     private IEnumerator PlayingAnimation()
     {
-        Player.Instance.isWorking = true;
-        Player.Instance.Animator.SetBool("isRunning", false);
-        Player.Instance.Animator.SetTrigger("pickup");
+        _player.GetComponent<Player>().isWorking = true;
+        _player.GetComponentInChildren<Animator>().SetBool("isRunning", false);
+        _player.GetComponentInChildren<Animator>().SetTrigger("pickup");
         yield return new WaitForSeconds(1f);
-        Player.Instance.isWorking = false;
+        _player.GetComponent<Player>().isWorking = false;
     }
 }

@@ -9,14 +9,14 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Transform _container;
     [SerializeField] private Transform _draggingParent;
     [SerializeField] private int _maxCell;
-    private List<AssetItem> Items;
+    private List<Item> Items;
 
     public void OnEnable()
     {
         Render(Items);
     }
 
-    public void Render(List<AssetItem> items)
+    public void Render(List<Item> items)
     {
         foreach (Transform child in _container)
             Destroy(child.gameObject);

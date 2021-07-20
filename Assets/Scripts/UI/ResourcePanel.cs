@@ -6,9 +6,9 @@ public class ResourcePanel : MonoBehaviour
 {
     [SerializeField] private ResourceLine _resourceLineTemplate;
     [SerializeField] private Transform _container;
-    private List<AssetItem> _itemList;
+    private List<Item> _itemList;
 
-    public void Init(List<AssetItem> itemList)
+    public void Init(List<Item> itemList)
     {
         _itemList = itemList;
     }
@@ -18,7 +18,7 @@ public class ResourcePanel : MonoBehaviour
         Render(_itemList);
     }
 
-    public void Render(List<AssetItem> items)
+    public void Render(List<Item> items)
     {
         foreach (Transform child in _container)
             Destroy(child.gameObject);

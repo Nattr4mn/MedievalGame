@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7968114358222373514}
   - component: {fileID: 8578011496064700431}
   - component: {fileID: 16449772}
+  - component: {fileID: 1346797531}
+  - component: {fileID: 1346797530}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -79,22 +81,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isWorking: 0
   _playerObject: {fileID: 7085574102959764813}
-  _playerSpeed: 150
-  _animator: {fileID: 4611396172883572109}
-  animationParameterList:
-  - idle
-  - run
-  - puckup
-  - gathering
   _playerRB: {fileID: 7968114358222373514}
-  itemList:
-  - {fileID: 11400000, guid: e3205af7b42a2c9479acf27cfe66ef57, type: 2}
-  - {fileID: 11400000, guid: 6a5d4f816ddf9c7449c7892550d4e4b4, type: 2}
-  - {fileID: 11400000, guid: 2c818c86c9c887d44ae1a0eabd63a49b, type: 2}
-  seedsList:
-  - {fileID: 11400000, guid: a634eb1e9057b6043bae8fc0d7dcd951, type: 2}
-  - {fileID: 11400000, guid: dce07796bc613644d8ef4b351b79493d, type: 2}
-  - {fileID: 11400000, guid: dcb88eaca9a2b0d47bbd7cdd839df65c, type: 2}
+  _animator: {fileID: 4611396172883572109}
+  _playerSpeed: 150
+  _playerCharacteristics: {fileID: 1346797531}
+  _playerResources: {fileID: 1346797530}
+--- !u!114 &1346797531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7968114358222373511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8071873f48ce342adf2ec4f5fbb6bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _level: {fileID: 11400000, guid: b1d2623487d03dc468188a824c8d4d4f, type: 2}
+  _charisma: {fileID: 11400000, guid: 34cc0570deab70c4a90c9fee7215cf6a, type: 2}
+  _stamina: {fileID: 11400000, guid: 1a0962533df7ae9449a6af827f560d3f, type: 2}
+  _luck: {fileID: 11400000, guid: a1ac2ac0f5c29e645ba9d8f4cc1ea249, type: 2}
+  _energy: {fileID: 11400000, guid: 012a0c5781eab194eac409e579e634ed, type: 2}
+  _thirst: {fileID: 11400000, guid: aa92624c39ea74849be1f79811cc6d70, type: 2}
+  _hunger: {fileID: 11400000, guid: d2e6040ea9bb4294490991c65111f25e, type: 2}
+  EnergyEvents:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1346797530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7968114358222373511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa4d9e81a3a81fb46aff576bb5fba8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8702012039317910897
 GameObject:
   m_ObjectHideFlags: 0

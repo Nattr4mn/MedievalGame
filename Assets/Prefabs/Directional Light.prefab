@@ -108,5 +108,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameTime: {fileID: 0}
   directionalLight: {fileID: 5236724123377902705}
-  fullDay: 300
+  fullDay: 720
   currentTime: 0.3

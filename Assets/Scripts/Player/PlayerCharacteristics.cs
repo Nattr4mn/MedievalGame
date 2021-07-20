@@ -1,60 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerCharacteristics : MonoBehaviour
 {
-    public float Charisma => charisma;
-    public float Endurance => endurance;
-    public float Luck => luck;
+    public float Experience => experience;
+    public Characteristic Level => _level;
+    public Characteristic Charisma => _charisma;
+    public Characteristic Stamina => _stamina;
+    public Characteristic Luck => _luck;
+    public Characteristic Energy => _energy;
+    public Characteristic Thirst => _thirst;
+    public Characteristic Hunger => _hunger;
 
-    private float level = 0;
-    private float experience = 0;
-    private float charisma = 1;
-    private float endurance = 1;
-    private float luck = 1;
-    private float curThirst = 10;
-    private float maxThirst = 10;
-    private float curHunger = 10;
-    private float maxHunger = 10;
-    private float expenseMultiplier = 1;
 
-    private void Start()
+    private float experience = 0f;
+    [SerializeField] private Characteristic _level;
+    [SerializeField] private Characteristic _charisma;
+    [SerializeField] private Characteristic _stamina;
+    [SerializeField] private Characteristic _luck;
+    [SerializeField] private Characteristic _energy;
+    [SerializeField] private Characteristic _thirst;
+    [SerializeField] private Characteristic _hunger;
+    [SerializeField] private UnityEvent<float, float, float> EnergyEvents;
+
+    private void Awake()
     {
-        UIManager.Instance.hungerSlider.value = curHunger / maxHunger;
-        UIManager.Instance.thirstSlider.value = curThirst / maxThirst;
+        EnergyEvents?.Invoke(_energy.Value / _energy.MaxValue, _hunger.Value / _hunger.MaxValue, _thirst.Value / _thirst.MaxValue);
         StartCoroutine(ConsumptionOfNaturalNeeds());
-    }
-
-    public void ReplenishingThirst(float value)
-    {
-        if (value > maxThirst)
-        {
-            curThirst = maxThirst;
-        }
-        else if (value > 0)
-        {
-            if (curThirst + value > maxThirst)
-                curThirst = maxThirst;
-            else
-                curThirst += value;
-        }
-    }
-
-    public void ReplenishingHunger(float value)
-    {
-        if (value > maxHunger)
-        {
-            curHunger = maxHunger;
-        }
-        else if (value > 0)
-        {
-            if (curHunger + value > maxHunger)
-                curHunger = maxHunger;
-            else
-                curHunger += value;
-        }
-        
     }
 
     private IEnumerator ConsumptionOfNaturalNeeds()
@@ -62,10 +36,10 @@ public class PlayerCharacteristics : MonoBehaviour
         while(true)
         {
             yield return new WaitForSeconds(2f);
-            curHunger -= 0.05f * expenseMultiplier;
-            curThirst -= 0.1f * expenseMultiplier;
-            UIManager.Instance.hungerSlider.value = curHunger / maxHunger;
-            UIManager.Instance.thirstSlider.value = curThirst / maxThirst;
+            _hunger.Value -= (0.05f - ((_stamina.Value * 3) / 1000));
+            _thirst.Value -= (0.1f - ((_stamina.Value * 6) / 1000));
+            _energy.Value -= (_hunger.Value - _thirst.Value) / 100;
+            EnergyEvents?.Invoke(_energy.Value / _energy.MaxValue, _hunger.Value / _hunger.MaxValue, _thirst.Value / _thirst.MaxValue);
         }
     }
 }

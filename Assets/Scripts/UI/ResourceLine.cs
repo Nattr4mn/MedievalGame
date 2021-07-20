@@ -7,7 +7,7 @@ public class ResourceLine : MonoBehaviour
     [SerializeField] private Image _iconField;
     private string itemName;
 
-    public void Render(IItem item)
+    public void Render(Item item)
     {
         itemName = item.Name;
         _textField.text = item.ItemCount.ToString();
@@ -17,7 +17,7 @@ public class ResourceLine : MonoBehaviour
     public void ClickButton()
     {
         itemName = itemName.Replace("Seed", "");
-        Player.Instance.Resources.currentFarmingCrop = itemName;
+        //Player.Instance.Resources.currentFarmingCrop = itemName;
         UIManager.Instance.Action();
         FindObjectOfType<ResourcePanel>().gameObject.SetActive(false);
     }

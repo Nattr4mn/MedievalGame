@@ -15,7 +15,7 @@ public class InventoryCell : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         _originalParent = transform.parent;
     }
 
-    public void Render(IItem item)
+    public void Render(Item item)
     {
         _countField.text = item.ItemCount.ToString();
         _iconField.sprite = item.UIIcon;

@@ -24,9 +24,7 @@ public class ForestManager : Loader<ForestManager>
             var noise = Mathf.PerlinNoise(x, z);
             Vector3 pos = new Vector3(x, 0, z);
 
-            while (Physics.OverlapSphere(pos, _density, _mask).Length != 0 &&
-                x == Player.Instance.gameObject.transform.position.x &&
-                z == Player.Instance.gameObject.transform.position.z)
+            while (Physics.OverlapSphere(pos, _density, _mask).Length != 0)
             {
                 x = Random.Range(0f, 100f);
                 z = Random.Range(0f, 100f);

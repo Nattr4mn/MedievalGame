@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 892960476136523034}
   - component: {fileID: 892960476136523013}
   - component: {fileID: 892960476136523033}
-  - component: {fileID: 892960476136523038}
+  - component: {fileID: 8978131876684219012}
   m_Layer: 6
   m_Name: Garden
   m_TagString: Garden
@@ -370,6 +370,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -426,7 +427,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 64.263855, z: 1.0000001}
   m_Center: {x: 0, y: 31.631918, z: 0}
---- !u!114 &892960476136523038
+--- !u!114 &8978131876684219012
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -435,7 +436,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 892960476136523012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9188e382160a99745a6d57a7e1e2d155, type: 3}
+  m_Script: {fileID: 11500000, guid: f225821cf1e4b8c4dbdd2674046e2580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &892960476484124203
