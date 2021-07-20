@@ -30,6 +30,7 @@ public class Garden : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            gameObject.GetComponent<Outline>().enabled = true;
             print("Enter!");
             if (isSown && canCollect)
                 GatheringEvents?.Invoke();
@@ -56,6 +57,7 @@ public class Garden : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            gameObject.GetComponent<Outline>().enabled = false;
             TrigerEnterEvents?.Invoke(false);
             CurrentGarden = null;
         }

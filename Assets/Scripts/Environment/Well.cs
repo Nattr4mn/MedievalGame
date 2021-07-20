@@ -6,11 +6,13 @@ public class Well : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
+        gameObject.GetComponent<Outline>().enabled = true;
         UIManager.Instance.ActionEvent += ReplenishingThirst;
     }
 
     private void OnTriggerExit(Collider other)
     {
+        gameObject.GetComponent<Outline>().enabled = false;
         UIManager.Instance.ActionEvent -= ReplenishingThirst;
     }
 

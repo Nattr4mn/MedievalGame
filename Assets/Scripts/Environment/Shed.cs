@@ -8,12 +8,14 @@ public class Shed : MonoBehaviour
     private GameObject _player;
     private void OnTriggerEnter(Collider other)
     {
+        gameObject.GetComponent<Outline>().enabled = true;
         _player = other.gameObject;
         UIManager.Instance.ActionEvent += ResourcePanel;
     }
 
     private void OnTriggerExit(Collider other)
     {
+        gameObject.GetComponent<Outline>().enabled = false;
         UIManager.Instance.ActionEvent -= ResourcePanel;
     }
 
