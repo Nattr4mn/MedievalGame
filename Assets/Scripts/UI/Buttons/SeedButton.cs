@@ -7,13 +7,13 @@ public class SeedButton : MonoBehaviour
 {
     [SerializeField] private Text _text;
     [SerializeField] private Image _image;
-    private GardensManager _gardensManager;
+    private GardensUIManager _gardensManager;
     private Item _item;
 
-    public void Init(GardensManager gardensManager, Item item)
+    public void Init(GardensUIManager gardensManager, Item item)
     {
         _item = item;
-        _text.text = item.ItemCount.ToString();
+        _text.text = item.Count.ToString();
         _image.sprite = item.UIIcon;
         _gardensManager = gardensManager;
     }

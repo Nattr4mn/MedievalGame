@@ -1,38 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Shed : MonoBehaviour
 {
-    [SerializeField] private ResourcePanel resourcePanel;
-    private GameObject _player;
+    [SerializeField] private UnityEvent<bool> ShedEvents;
+
     private void OnTriggerEnter(Collider other)
     {
         gameObject.GetComponent<Outline>().enabled = true;
-        _player = other.gameObject;
-        UIManager.Instance.ActionEvent += ResourcePanel;
+        ShedEvents?.Invoke(true);
     }
 
     private void OnTriggerExit(Collider other)
     {
         gameObject.GetComponent<Outline>().enabled = false;
-        UIManager.Instance.ActionEvent -= ResourcePanel;
-    }
-
-    public void ResourcePanel()
-    {
-        //resourcePanel.Init(Player.Instance.Resources.ItemList);
-        StartCoroutine(PlayingAnimation());
-        UIManager.Instance.ActionButton.gameObject.SetActive(true);
-        resourcePanel.gameObject.SetActive(true);
-    }
-
-    private IEnumerator PlayingAnimation()
-    {
-        _player.GetComponent<Player>().isWorking = true;
-        _player.GetComponentInChildren<Animator>().SetBool("isRunning", false);
-        _player.GetComponentInChildren<Animator>().SetTrigger("pickup");
-        yield return new WaitForSeconds(1f);
-        _player.GetComponent<Player>().isWorking = false;
+        ShedEvents?.Invoke(false);
     }
 }

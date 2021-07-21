@@ -7,19 +7,12 @@ public class Well : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         gameObject.GetComponent<Outline>().enabled = true;
-        UIManager.Instance.ActionEvent += ReplenishingThirst;
+        UIManager.Instance.ActionEvent += other.GetComponent<PlayerItems>().FillBucket;
     }
 
     private void OnTriggerExit(Collider other)
     {
         gameObject.GetComponent<Outline>().enabled = false;
-        UIManager.Instance.ActionEvent -= ReplenishingThirst;
-    }
-
-    public void ReplenishingThirst()
-    {
-        //Player.Instance.Animator.SetBool("isRunning", false);
-        //Player.Instance.Animator.SetTrigger("pickup");
-        //Player.Instance.Characteristics.ReplenishingThirst(2f);
+        UIManager.Instance.ActionEvent -= other.GetComponent<PlayerItems>().FillBucket;
     }
 }

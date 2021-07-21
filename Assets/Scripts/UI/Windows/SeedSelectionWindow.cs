@@ -2,29 +2,29 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class SeedSelectionWindow : MonoBehaviour, IWindow
+public class SeedSelectionWindow : MonoBehaviour
 {
     [SerializeField] private GameObject _player;
     [SerializeField] private Transform _container;
     [SerializeField] private SeedButton _buttonTemplate;
-    [SerializeField] private GardensManager _gardensManager;
+    [SerializeField] private GardensUIManager _gardensManager;
 
-    public void Close()
-    {   
-        foreach(Transform child in _container)
-            child.GetComponent<Button>().onClick.RemoveAllListeners();
-
-        gameObject.SetActive(false);
+    private void OnDisable()
+    {
+        foreach (Transform child in _container)
+            Destroy(child.gameObject);
     }
 
-    public void Open()
+    private void OnEnable()
     {
-        gameObject.SetActive(true);
-        _player.GetComponent<PlayerResources>().ItemsList.ForEach(item =>
+        _player.GetComponent<PlayerItems>().ItemsList.ForEach(item =>
         {
-            var seed = Instantiate(_buttonTemplate, _container);
-            seed.gameObject.name = item.Name;
-            seed.Init(_gardensManager, item);
+            if (item.Type == ItemType.SEED && item.Count > 0)
+            {
+                var seed = Instantiate(_buttonTemplate, _container);
+                seed.gameObject.name = item.Name;
+                seed.Init(_gardensManager, item);
+            }
         });
     }
 }

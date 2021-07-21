@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     public PlayerMovement Movement => _playerMovement;
     public PlayerCharacteristics Characteristics => _playerCharacteristics;
-    public PlayerResources Resources => _playerResources;
+    public PlayerItems Resources => _playerResources;
     public Animator Animator => _animator;
     public bool isWorking = false;
 
@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private float _playerSpeed;
     [SerializeField] private PlayerCharacteristics _playerCharacteristics;
-    [SerializeField] private PlayerResources _playerResources;
+    [SerializeField] private PlayerItems _playerResources;
     private PlayerMovement _playerMovement;
 
     private void Awake()
