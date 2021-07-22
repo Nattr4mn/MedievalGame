@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GardensUIManager : MonoBehaviour
+public class GardensUI : MonoBehaviour
 {
     public string CurrentSeed { get => _currentSeed; set { _currentSeed = value; } }
     public string CurrentCrop { get => _currentCrop; set { _currentCrop = value; } }
@@ -110,6 +110,5 @@ public class GardensUIManager : MonoBehaviour
             SliderState();
             yield return new WaitForSeconds(0.01f);
         }
-        print("Exit");
     }
 }

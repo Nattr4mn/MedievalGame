@@ -11,9 +11,9 @@ public class Garden : MonoBehaviour
     public bool CanCollect => _canCollect;
 
 
-    [SerializeField] private UnityEvent GardenEvent;
     [SerializeField] private float _growthTime = 10f;
     [SerializeField] private float _irrigationTime = 5f;
+    [SerializeField] private UnityEvent GardenEvent;
     private float _irrigationLevel = 0f;
     private float _growthRate = 0f;
     private int _gardenLevel = 0;

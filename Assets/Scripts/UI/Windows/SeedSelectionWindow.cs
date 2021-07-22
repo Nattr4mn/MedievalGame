@@ -7,7 +7,7 @@ public class SeedSelectionWindow : MonoBehaviour
     [SerializeField] private GameObject _player;
     [SerializeField] private Transform _container;
     [SerializeField] private SeedButton _buttonTemplate;
-    [SerializeField] private GardensUIManager _gardensManager;
+    [SerializeField] private GardensUI _gardensManager;
 
     private void OnDisable()
     {
