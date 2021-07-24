@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     public PlayerMovement Movement => _playerMovement;
     public PlayerCharacteristics Characteristics => _playerCharacteristics;
-    public PlayerItems Resources => _playerResources;
+    public PlayerItems Items => _playerResources;
     public Animator Animator => _animator;
     public bool isWorking = false;
 

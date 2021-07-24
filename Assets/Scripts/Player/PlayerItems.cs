@@ -18,10 +18,10 @@ public class PlayerItems : MonoBehaviour
 
     public void FillBucket()
     {
-        _bucket.Count = Random.Range(0.3f, 0.6f);
+        _bucket.Count = Random.Range(0.5f, 1f);
     }
 
-    public Item GetItemCount(string name)
+    public IItem GetItem(string name)
     {
         return _itemsList.FirstOrDefault(item => item.Name == name);
     }

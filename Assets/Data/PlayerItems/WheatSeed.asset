@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: WheatSeed
   m_EditorClassIdentifier: 
   _name: WheatSeed
-  _count: 10
+  _count: 18
   _type: 0
   _uiicon: {fileID: 21300000, guid: e792da54e43fd734f8741fc1c477337a, type: 3}

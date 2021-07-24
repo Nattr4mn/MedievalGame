@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerCharacteristics : MonoBehaviour
 {
-    public float Experience => experience;
+    public float Experience => _experience;
     public Characteristic Level => _level;
     public Characteristic Charisma => _charisma;
     public Characteristic Stamina => _stamina;
@@ -15,7 +15,7 @@ public class PlayerCharacteristics : MonoBehaviour
     public Characteristic Hunger => _hunger;
 
 
-    private float experience = 0f;
+    private float _experience = 0f;
     [SerializeField] private Characteristic _level;
     [SerializeField] private Characteristic _charisma;
     [SerializeField] private Characteristic _stamina;
@@ -24,6 +24,19 @@ public class PlayerCharacteristics : MonoBehaviour
     [SerializeField] private Characteristic _thirst;
     [SerializeField] private Characteristic _hunger;
     [SerializeField] private UnityEvent<float, float, float> EnergyEvents;
+
+    public void GetExperience(float experience)
+    {
+        _experience += experience;
+        if(_experience >= 10 + (1 * _level.Value))
+        {
+            if(_level.Value != _level.MaxValue)
+            {
+                _experience -= (10 + (1 * _level.Value));
+                _level.Value++;
+            }
+        }
+    }
 
     private void Awake()
     {

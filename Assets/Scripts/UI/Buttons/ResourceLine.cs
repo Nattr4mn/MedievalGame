@@ -11,6 +11,6 @@ public class ResourceLine : MonoBehaviour
     public void Render(Item item)
     {
         _countField.text = item.Count.ToString();
-        _iconField.sprite = item.UIIcon;
+        _iconField.sprite = item.UiIcon;
     }
 }

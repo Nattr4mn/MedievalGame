@@ -3,46 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class AnimalEnclosure : MonoBehaviour
+public class AnimalEnclosure : FarmObject
 {
-    public int Level => _level;
-    public float Production => _production;
-    public float Water => _water;
+    public override int Level => _level;
+    public override float Production => _production;
+    public override float ProductionTime => _productionTime;
     public float Food => _food;
-    public bool Occupied => _occupied;
-    public bool CanCollect => _canCollect;
-    public Animal ÑurrentPopulation => _currentAnimals;
-    public PlayerItems PlayerItems => _playerItems;
+    public override bool Occupied => _occupied;
+    public override bool CanCollect => _canCollect;
+    public override IItem ÑurrentObject => _currentAnimals;
 
+    public override float Harvest => throw new System.NotImplementedException();
 
+    public override float Experience => throw new System.NotImplementedException();
+
+    [SerializeField] private float _productionTime = 0f;
     private int _level = 0;
     private float _production = 0f;
     private float _water = 0f;
     private float _food = 0f;
     private bool _occupied = false;
     private bool _canCollect = false;
-    private Animal _currentAnimals;
-    private PlayerItems _playerItems;
-    [SerializeField] private UnityEvent Events;
+    private IItem _currentAnimals;
 
-    public void Fill(Animal animalName, Item food)
+    public override void Fill(IItem firstItem, IItem secondItem)
     {
-        if(_playerItems.Gold.Count > animalName.Price && _playerItems.Bucket.Count > 0 && food.Count >= 3)
+        Animal animal = (Animal)firstItem;
+        Item food = (Item)secondItem;
+        PlayerItems playerItems = Player.Items;
+
+        if (playerItems.Gold.Count > animal.Price && playerItems.Bucket.Count > 0 && food.Count >= 3)
         {
-            _water = _playerItems.Bucket.Count;
-            _playerItems.Bucket.Count = 0f;
+            _water = playerItems.Bucket.Count;
+            playerItems.Bucket.Count = 0f;
             _food = 1f;
             food.Count -= 3f;
-            _playerItems.Gold.Count -= animalName.Price;
-            _currentAnimals = animalName;
+            playerItems.Gold.Count -= animal.Price;
+            _currentAnimals = animal;
             _occupied = true;
             StartCoroutine(ProcessOfGrowth());
             Events?.Invoke();
         }
     }
  
-    private IEnumerator ProcessOfGrowth()
+    public override IEnumerator ProcessOfGrowth()
     {
+        PlayerItems playerItems = Player.Items;
         float productionMultiplier = 1;
         while (_production < 1)
         {
@@ -50,44 +56,19 @@ public class AnimalEnclosure : MonoBehaviour
 
             _production = 0f;
             _food = 1f;
-            _water = _playerItems.Bucket.Count;
+            _water = playerItems.Bucket.Count;
             yield return new WaitForSeconds(1f);
         }
         _canCollect = true;
     }
 
-    public void Collecting()
+    public override void Collecting()
     {
 
-    }
-
-    public void PourWater(float value)
-    {
-        _water += value;
     }
 
     public void Saturate()
     {
 
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.CompareTag("Player"))
-        {
-            GetComponent<Outline>().enabled = true;
-            _playerItems = other.GetComponent<PlayerItems>();
-            Events?.Invoke();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            GetComponent<Outline>().enabled = false;
-            _playerItems = null;
-            Events?.Invoke();
-        }
     }
 }

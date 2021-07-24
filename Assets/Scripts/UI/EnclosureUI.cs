@@ -24,7 +24,7 @@ public class EnclosureUI : MonoBehaviour
 
     public void PourWater()
     {
-        _animalEnclosure.PourWater(_playerItems.Bucket.Count);
+        _animalEnclosure.PourWater();
         _playerItems.Bucket.Count = 0;
     }
 
@@ -35,7 +35,7 @@ public class EnclosureUI : MonoBehaviour
 
     public void DefiningAction()
     {
-        if (_animalEnclosure.PlayerItems != null)
+        if (_animalEnclosure.Player != null)
         {
             StartCoroutine(SliderUpdate());
             switch (_animalEnclosure.Occupied)

@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class SeedSelectionWindow : MonoBehaviour
 {
-    [SerializeField] private GameObject _player;
+    [SerializeField] private Player _player;
     [SerializeField] private Transform _container;
     [SerializeField] private SeedButton _buttonTemplate;
-    [SerializeField] private GardensUI _gardensManager;
+    [SerializeField] private FarmUI _farmUi;
 
     private void OnDisable()
     {
@@ -23,7 +23,7 @@ public class SeedSelectionWindow : MonoBehaviour
             {
                 var seed = Instantiate(_buttonTemplate, _container);
                 seed.gameObject.name = item.Name;
-                seed.Init(_gardensManager, item);
+                seed.Init(_farmUi, item, _player);
             }
         });
     }

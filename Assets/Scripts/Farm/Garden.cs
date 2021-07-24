@@ -2,146 +2,94 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Garden : MonoBehaviour
+public class Garden : FarmObject
 {
-    public static Garden CurrentGarden { get; private set; }
-    public float IrrigationLevel => _irrigationLevel;
-    public float GrowthRate => _growthRate;
-    public bool IsSown => _isSown;
-    public bool CanCollect => _canCollect;
+    public override int Level => _level;
+    public override float Production => _production;
+    public override float ProductionTime => _productionTime;
+    public override float Harvest => _harvest;
+    public override float Experience => _experience;
+    public override bool Occupied => _occupied;
+    public override bool CanCollect => _canCollect;
+    public override IItem ÑurrentObject => _currentSeedName;
+    public IItem ÑurrentHarvest => _currentFarmCropName;
 
-
-    [SerializeField] private float _growthTime = 10f;
-    [SerializeField] private float _irrigationTime = 5f;
-    [SerializeField] private UnityEvent GardenEvent;
-    private float _irrigationLevel = 0f;
-    private float _growthRate = 0f;
-    private int _gardenLevel = 0;
-    private GameObject _player;
+    [SerializeField] private float _productionTime = 24f;
+    private int _level = 0;
+    private float _production = 0f;
+    public float _harvest;
+    public float _experience;
+    private bool _occupied = false;
     private bool _canCollect = false;
-    private bool _isSown = false;
-    private string _currentSeedName;
-    private string _currentFarmCropName;
+    private Item _currentSeedName;
+    private Item _currentFarmCropName;
 
-
-    private void OnTriggerEnter(Collider other)
+    public override void Collecting()
     {
-        if (other.CompareTag("Player"))
-        {
-            gameObject.GetComponent<Outline>().enabled = true;
-            CurrentGarden = this;
-            GardenEvent?.Invoke();
-            _player = other.gameObject;
-            print(_player.GetComponent<PlayerItems>().Bucket.Count);
-        }
+        var playerEnergy = Player.Characteristics.Energy.Value / Player.Characteristics.Energy.MaxValue;
+        ResetValue();
+        StartCoroutine(Processing("Crops", _currentFarmCropName.Name, false));
+        _harvest = (int)Random.Range(5f, 10f * (1 + Player.Characteristics.Luck.Value / 10f));
+
+        if (playerEnergy <= 0.5f)
+            _harvest *= (0.5f + playerEnergy);
+
+        _experience = _harvest / (2 + Player.Characteristics.Level.Value);
+        _currentFarmCropName.Count += _harvest;
+        _currentSeedName.Count += (int)Random.Range(5f, 10f);
     }
 
-    private void OnTriggerExit(Collider other)
+    public override void Fill(IItem firstItem, IItem secondItem)
     {
-        if (other.CompareTag("Player"))
+        PlayerItems playerItems = Player.Items;
+        _currentSeedName = (Item)firstItem;
+        _currentFarmCropName = (Item)secondItem;
+
+        if (_currentSeedName.Count >= 10 && playerItems.Bucket.Count > 0)
         {
-            gameObject.GetComponent<Outline>().enabled = false;
-            CurrentGarden = null;
-            GardenEvent?.Invoke();
+            _occupied = true;
+            _currentSeedName.Count -= 10;
+            _water = playerItems.Bucket.Count;
+            playerItems.Bucket.Count = 0;
+            StartCoroutine(ProcessOfGrowth());
         }
+
+        Events?.Invoke();
+    }
+
+    public override IEnumerator ProcessOfGrowth()
+    {
+        var productionMultiplier = 1f;
+        StartCoroutine(Processing("Crops", _currentFarmCropName.Name, true));
+        yield return new WaitForSeconds(3f);
+        _production = 0;
+
+
+        while (_production < 1)
+        {
+            productionMultiplier = _water <= 0 ? -1f : 1f;
+            _production += productionMultiplier * (1 / (_productionTime * 1f));
+            _water -= 1 / ((_productionTime / 2) * 1f);
+            yield return new WaitForSeconds(1f);
+
+            Events?.Invoke();
+            if (_production <= 0 && _water <= 0)
+            {
+                transform.Find("Crops").transform.Find(_currentFarmCropName.Name).gameObject.SetActive(false);
+                ResetValue();
+            }
+        }
+        _canCollect = true;
+        Events?.Invoke();
     }
 
     private void ResetValue()
     {
-        _isSown = false;
+        _occupied = false;
         _canCollect = false;
-        _irrigationLevel = 0;
-        _growthRate = 0;
-    }
-
-    public void Gathering()
-    {
-        ResetValue();
-        StartCoroutine(Processing(false));
-
-        var harvest = (int)Random.Range(5f, 10f * (1 + _player.GetComponent<PlayerCharacteristics>().Luck.Value / 10f));
-        _player.GetComponent<PlayerItems>().ReplenishStocks(_currentFarmCropName, harvest);
-
-        var seedsDropCount = (int)Random.Range(5f, 10f);
-        _player.GetComponent<PlayerItems>().ReplenishStocks(_currentSeedName, harvest);
-
-    }
-
-    public void Planting(string seed, string farmCrop)
-    {
-        if (_player.GetComponent<PlayerItems>().GetItemCount(seed)?.Count >= 10)
-        {
-            _isSown = true;
-            _currentFarmCropName = farmCrop;
-            _currentSeedName = seed;
-            StartCoroutine(Processing(true));
-            StartCoroutine(ProcessOfGrowth());
-        }
-        else
-        {
-            GardenEvent?.Invoke();
-        }
-    }
-
-    public void Watering()
-    {
-        var value = _player.GetComponent<PlayerItems>().Bucket.Count;
-        _player.GetComponent<PlayerItems>().Bucket.Count = 0;
-
-        _irrigationLevel += value;
-
-        if (_irrigationLevel > 1)
-            _irrigationLevel = 1;
-    }
-
-    private IEnumerator Processing(bool state)
-    {
-        _player.GetComponentInChildren<Animator>().SetBool("isRunning", false);
-        _player.GetComponentInChildren<Animator>().SetTrigger("gathering");
-        yield return new WaitForSeconds(3f);
-        transform.Find("Crops").transform.Find(_currentFarmCropName).gameObject.SetActive(state);
-    }
-
-    private IEnumerator ProcessOfGrowth()
-    {
-        yield return new WaitForSeconds(3f);
-        _growthRate = 0;
-        StartCoroutine(DryingProcess());
-        var growthMultiplier = 1f;
-
-
-        while (_growthRate < 1)
-        {
-            growthMultiplier = _irrigationLevel <= 0 ? -1f : 1f;
-            _growthRate += growthMultiplier * (1 / (_growthTime * 60f));
-            yield return new WaitForSeconds(1f);
-
-            GardenEvent?.Invoke();
-            if (_growthRate <= 0)
-            {
-                transform.Find("Crops").transform.Find(_currentFarmCropName).gameObject.SetActive(false);
-                ResetValue();
-            }
-        }
-        GardenEvent?.Invoke();
-        _canCollect = true;
-    }
-
-    private IEnumerator DryingProcess()
-    {
-        _irrigationLevel = 1;
-
-        while (_isSown)
-        {
-            _irrigationLevel -= 1 / (_irrigationTime * 60f);
-            yield return new WaitForSeconds(1f);
-            GardenEvent?.Invoke();
-        }
+        _water = 0;
+        _production = 0;
     }
 }
 
 
-[System.Serializable]
-public class GrowthStateEvent : UnityEvent<bool> { }
-[System.Serializable]
-public class FertilizerEvent : UnityEvent<bool, bool> { }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Bucket
   m_EditorClassIdentifier: 
   _name: Bucket
-  _itemCount: 0
-  _itemType: 3
+  _count: 0
+  _type: 3
   _uiicon: {fileID: 0}

@@ -7,21 +7,23 @@ public class SeedButton : MonoBehaviour
 {
     [SerializeField] private Text _text;
     [SerializeField] private Image _image;
-    private GardensUI _gardensManager;
-    private Item _item;
+    private FarmUI _farmUi;
+    private IItem _firstItem;
+    private IItem _secondsItem;
 
-    public void Init(GardensUI gardensManager, Item item)
+    public void Init(FarmUI farmUi, Item item, Player player)
     {
-        _item = item;
+        _firstItem = item;
+        _secondsItem = player.Items.GetItem(item.Name.Replace("Seed", ""));
         _text.text = item.Count.ToString();
-        _image.sprite = item.UIIcon;
-        _gardensManager = gardensManager;
+        _image.sprite = item.UiIcon;
+        _farmUi = farmUi;
     }
 
     public void Action()
     {
-        _gardensManager.CurrentSeed = _item.Name;
-        _gardensManager.CurrentCrop = _item.Name.Replace("Seed", "");
-        _gardensManager.Planting();
+        _farmUi.FirstItem = _firstItem;
+        _farmUi.SecondsItem = _secondsItem;
+        _farmUi.Fill();
     }
 }
