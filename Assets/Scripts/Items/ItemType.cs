@@ -5,6 +5,8 @@ namespace UnityEngine
         SEED,
         HARVEST,
         MEAL,
-        TOOL
+        TOOL,
+        ANIMAL,
+        MEAT
     }
 }

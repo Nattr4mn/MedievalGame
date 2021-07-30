@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ForestPlants: MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+[RequireComponent(typeof(Outline))]
+public class ForestPlants : ActivatedObject
+{
+    [SerializeField] private Item _item;
+    [Range(1, 3)][SerializeField] private float minimumNumberOfDrops = 1f;
+    [Range(3, 5)] [SerializeField] private float maximumNumberOfDrops = 3f;
+
+    public override void ActivationAction()
     {
-        
+        Player.Collecting();
+        _item.Count += (int)Random.Range(minimumNumberOfDrops, maximumNumberOfDrops);
+        Player.Input.ActionEvent -= ActivationAction;
+        Destroy(gameObject);
     }
 }

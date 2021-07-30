@@ -536,10 +536,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _joystick: {fileID: 0}
   _action: {fileID: 0}
-  irrigationLevelSlider: {fileID: 66365347}
-  growthRateSlider: {fileID: 1966460159}
-  thirstSlider: {fileID: 0}
-  hungerSlider: {fileID: 0}
 --- !u!1 &502709889
 GameObject:
   m_ObjectHideFlags: 0
@@ -1538,18 +1534,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 0}
-      propertyPath: directionalLight
-      value: 
-      objectReference: {fileID: 705507995}
-    - target: {fileID: 0}
-      propertyPath: growthRateSlider
-      value: 
-      objectReference: {fileID: 1966460159}
-    - target: {fileID: 0}
-      propertyPath: irrigationLevelSlider
-      value: 
-      objectReference: {fileID: 66365347}
     - target: {fileID: 7323058234863926964, guid: 3729be0832ef9b74db24dc60e30ac596, type: 3}
       propertyPath: _action
       value: 

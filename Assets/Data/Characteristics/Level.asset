@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Level
   m_EditorClassIdentifier: 
   _name: Level
-  _value: 0
+  _value: 20
   _maxValue: 20
   _uiIcon: {fileID: 0}
