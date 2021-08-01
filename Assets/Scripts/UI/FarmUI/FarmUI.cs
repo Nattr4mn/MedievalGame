@@ -21,7 +21,7 @@ public abstract class FarmUI : MonoBehaviour
     [SerializeField]    private     SelectionWindow     _selectionWindow;
     [SerializeField]    private     ErrorWindow         _errorPanel;
     [SerializeField]    private     GameObject          _buttonsPanel;
-    [SerializeField]    private     AwardWindow         _awardWindowTemplate;
+    [SerializeField]    private     Reward              _awardWindowTemplate;
     [SerializeField]    private     Sprite              _expSprite;
     [SerializeField]    private     List<FarmObject>    _farmObjectList;
     [SerializeField]    private     Player              _player;
@@ -41,11 +41,11 @@ public abstract class FarmUI : MonoBehaviour
             switch (_currentFarmObject.Occupied)
             {
                 case false:
-                    _player.Input.ActionEvent += SelectionWindow;
+                    _player.Input.PlayerAction += SelectionWindow;
                     break;
                 case true:
                     if (_currentFarmObject.CanCollect)
-                        _player.Input.ActionEvent += Collecting;
+                        _player.Input.PlayerAction += Collecting;
                     else
                         PanelsEnable(true);
                     break;
@@ -55,8 +55,8 @@ public abstract class FarmUI : MonoBehaviour
         {
             _sliderUpdate = false;
             PanelsEnable(false);
-            _player.Input.ActionEvent -= Collecting;
-            _player.Input.ActionEvent -= SelectionWindow;
+            _player.Input.PlayerAction -= Collecting;
+            _player.Input.PlayerAction -= SelectionWindow;
         }
     }
 
@@ -73,7 +73,7 @@ public abstract class FarmUI : MonoBehaviour
 
     private void Collecting()
     {
-        _player.Input.ActionEvent -= Collecting;
+        _player.Input.PlayerAction -= Collecting;
         PanelsEnable(false);
         _currentFarmObject.Collecting();
         StartCoroutine(Awards());

@@ -19,7 +19,7 @@ public class EnclosureUI : FarmUI
         Player.Input.ActionButton.gameObject.SetActive(true);
         if (Player.Items.Gold.Value >= _currentAnimal.Price && Player.Items.Bucket.Value > 0 && _currentAnimal.RequiredFood.Count > 5f)
         {
-            Player.Input.ActionEvent -= SelectionWindow;
+            Player.Input.PlayerAction -= SelectionWindow;
             Selection.gameObject.SetActive(false);
             ÑurrentFarmObject.Fill(_currentAnimal);
         }

@@ -18,7 +18,7 @@ public class GardenUI : FarmUI
         Player.Input.ActionButton.gameObject.SetActive(true);
         if (Player.Items.Bucket.Value > 0 && item.Count >= 10)
         {
-            Player.Input.ActionEvent -= SelectionWindow;
+            Player.Input.PlayerAction -= SelectionWindow;
             Selection.gameObject.SetActive(false);
             ÑurrentFarmObject.Fill(_crop);
         }

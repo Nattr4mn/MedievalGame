@@ -56,7 +56,7 @@ public abstract class FarmObject : MonoBehaviour
 
     protected virtual IEnumerator Processing(string objectParent, string obj, bool state)
     {
-        _player.Collecting();
+        _player.Input.Collecting();
         yield return new WaitForSeconds(3f);
         transform.Find(objectParent).transform.Find(obj).gameObject.SetActive(state);
     }

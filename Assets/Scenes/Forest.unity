@@ -628,10 +628,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 16449772, guid: 3729be0832ef9b74db24dc60e30ac596, type: 3}
-      propertyPath: _playerInput
-      value: 
-      objectReference: {fileID: 123322697}
     - target: {fileID: 123322697, guid: 3729be0832ef9b74db24dc60e30ac596, type: 3}
       propertyPath: _action
       value: 
@@ -640,10 +636,10 @@ PrefabInstance:
       propertyPath: _joystick
       value: 
       objectReference: {fileID: 6960753091560742618}
-    - target: {fileID: 7383180499610746569, guid: 3729be0832ef9b74db24dc60e30ac596, type: 3}
-      propertyPath: far clip plane
-      value: 40
-      objectReference: {fileID: 0}
+    - target: {fileID: 2004499578151145774, guid: 3729be0832ef9b74db24dc60e30ac596, type: 3}
+      propertyPath: _rewardContainer
+      value: 
+      objectReference: {fileID: 6960753091353303579}
     - target: {fileID: 7968114358222373511, guid: 3729be0832ef9b74db24dc60e30ac596, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2054,7 +2050,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 123322697}
         m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
-        m_MethodName: Action
+        m_MethodName: OnAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

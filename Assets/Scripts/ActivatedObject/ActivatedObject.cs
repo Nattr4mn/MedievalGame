@@ -8,7 +8,6 @@ public abstract class ActivatedObject : MonoBehaviour
 {
     public Player Player => _player;
 
-    [SerializeField] private UnityEvent<bool> Event;
     private Player _player;
 
     public abstract void ActivationAction();
@@ -19,7 +18,7 @@ public abstract class ActivatedObject : MonoBehaviour
         {
             gameObject.GetComponent<Outline>().enabled = true;
             _player = other.gameObject.GetComponent<Player>();
-            Event?.Invoke(true);
+            _player.Input.PlayerAction += ActivationAction;
         }
     }
 
@@ -27,9 +26,8 @@ public abstract class ActivatedObject : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _player.Input.ActionEvent -= ActivationAction;
+            _player.Input.PlayerAction -= ActivationAction;
             gameObject.GetComponent<Outline>().enabled = false;
-            Event?.Invoke(false);
         }
     }
 }

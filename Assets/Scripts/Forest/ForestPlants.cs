@@ -12,9 +12,14 @@ public class ForestPlants : ActivatedObject
 
     public override void ActivationAction()
     {
-        Player.Collecting();
-        _item.Count += (int)Random.Range(minimumNumberOfDrops, maximumNumberOfDrops);
-        Player.Input.ActionEvent -= ActivationAction;
+        var harvest = (int)Random.Range(minimumNumberOfDrops, maximumNumberOfDrops);
+        var exp = harvest / (2 + Player.Characteristics.Level.Value);
+        Player.Input.PlayerAction -= ActivationAction;
+
+        Player.Input.Collecting();
+        Player.Characteristics.AddExperience(exp);
+        Player.Reward.ShowRewards(_item.UiIcon, harvest, exp);
+        _item.Count += harvest;
         Destroy(gameObject);
     }
 }

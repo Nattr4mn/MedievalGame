@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Garden
   - ForestFruits
+  - Fishhouse
+  - Home
+  - Forest
+  - City
+  - Farm
   layers:
   - Default
   - TransparentFX

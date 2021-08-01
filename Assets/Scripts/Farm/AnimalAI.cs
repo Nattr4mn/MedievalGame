@@ -5,7 +5,6 @@ using UnityEngine;
 public class AnimalAI : MonoBehaviour
 {
     [SerializeField] private float speed;
-    [SerializeField] private 
     void Start()
     {
         

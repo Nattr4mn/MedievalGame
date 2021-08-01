@@ -36,6 +36,5 @@ public class PlayerItems : MonoBehaviour
                 item.Count += count;
         }
     }
-
 }
 

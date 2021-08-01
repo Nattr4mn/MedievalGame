@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimeManager : Loader<TimeManager>
+[Serializable]
+public class TimeManager : MonoBehaviour
 {
+	public float CurrentTime => currentTime;
 	[SerializeField] private Text _gameTime; // вывод текста
 	[SerializeField] private Transform directionalLight; // основной источник света
 	[SerializeField] private float fullDay = 120f; // сколько длиться день, в секундах

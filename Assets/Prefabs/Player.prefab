@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 1346797531}
   - component: {fileID: 1346797530}
   - component: {fileID: 123322697}
+  - component: {fileID: 1638725618}
+  - component: {fileID: 2004499578151145774}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -80,13 +82,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa58b15676afc564699ceed43ac34849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerInput: {fileID: 0}
-  _playerObject: {fileID: 7085574102959764813}
-  _playerRB: {fileID: 7968114358222373514}
-  _animator: {fileID: 4611396172883572109}
-  _playerSpeed: 150
+  _playerInput: {fileID: 123322697}
   _playerCharacteristics: {fileID: 1346797531}
-  _playerResources: {fileID: 1346797530}
+  _items: {fileID: 1346797530}
+  _naturalNeeds: {fileID: 1638725618}
+  _reward: {fileID: 2004499578151145774}
 --- !u!114 &1346797531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,24 +103,6 @@ MonoBehaviour:
   _charisma: {fileID: 11400000, guid: 34cc0570deab70c4a90c9fee7215cf6a, type: 2}
   _stamina: {fileID: 11400000, guid: 1a0962533df7ae9449a6af827f560d3f, type: 2}
   _luck: {fileID: 11400000, guid: a1ac2ac0f5c29e645ba9d8f4cc1ea249, type: 2}
-  _energy: {fileID: 11400000, guid: 012a0c5781eab194eac409e579e634ed, type: 2}
-  _thirst: {fileID: 11400000, guid: aa92624c39ea74849be1f79811cc6d70, type: 2}
-  _hunger: {fileID: 11400000, guid: d2e6040ea9bb4294490991c65111f25e, type: 2}
-  EnergyEvents:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: EnergyWindow, Assembly-CSharp
-        m_MethodName: ValueSet
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1346797530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +142,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _joystick: {fileID: 0}
   _action: {fileID: 0}
+  _playerObject: {fileID: 7085574102959764813}
+  _animator: {fileID: 4611396172883572109}
+  _rigidbody: {fileID: 7968114358222373514}
+  _playerSpeed: 150
+--- !u!114 &1638725618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7968114358222373511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c1cbd56059b934889850cb901b527f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Events:
+    m_PersistentCalls:
+      m_Calls: []
+  _energy: {fileID: 11400000, guid: 012a0c5781eab194eac409e579e634ed, type: 2}
+  _thirst: {fileID: 11400000, guid: aa92624c39ea74849be1f79811cc6d70, type: 2}
+  _hunger: {fileID: 11400000, guid: d2e6040ea9bb4294490991c65111f25e, type: 2}
+  _characteristics: {fileID: 1346797531}
+--- !u!114 &2004499578151145774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7968114358222373511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47956adba0132354ca9c4f32cffd5073, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rewardTemplate: {fileID: 3120124741106850991, guid: 96dcd8d28c3af2b4bbf145f3a5492728, type: 3}
+  _rewardContainer: {fileID: 0}
+  _characteristics: {fileID: 1346797531}
+  _expIcon: {fileID: 21300000, guid: ad147e2ea0334bb48aa32e9d075768c4, type: 3}
 --- !u!1 &8702012039317910897
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +237,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 2
-  far clip plane: 14.6
+  far clip plane: 40
   field of view: 60
   orthographic: 0
   orthographic size: 5

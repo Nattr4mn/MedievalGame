@@ -33,9 +33,9 @@ public class ResourceWindow : MonoBehaviour
     public void Enable(bool state)
     {
         if (state)
-            _player.Input.ActionEvent += Enable;
+            _player.Input.PlayerAction += Enable;
         else
-            _player.Input.ActionEvent -= Enable;
+            _player.Input.PlayerAction -= Enable;
 
     }
 

@@ -31,7 +31,7 @@ public class AnimalEnclosure : FarmObject
 
     public override void Collecting()
     {
-        var playerEnergy = _player.Characteristics.Energy.Value / _player.Characteristics.Energy.MaxValue;
+        var playerEnergy = _player.NaturalNeeds.Energy.Value / _player.NaturalNeeds.Energy.MaxValue;
         ResetValue();
         StartCoroutine(Processing("Animals", _currentAnimal.Name, false));
         _harvest = (int)Random.Range(5f, 10f * (1 + _player.Characteristics.Luck.Value / 10f));
