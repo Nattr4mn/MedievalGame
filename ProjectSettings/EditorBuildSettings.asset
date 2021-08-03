@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Forest.unity
     guid: 4b66a6e2c5f650645a6f2465548c12f1
   - enabled: 1
-    path: Assets/Scenes/Fishhouse.unity
-    guid: 8500a4d676d0ab04f82fffa723522c42
+    path: Assets/Scenes/Home.unity
+    guid: 74976b632e6ad0d48acafd43ea4cee81
   m_configObjects: {}

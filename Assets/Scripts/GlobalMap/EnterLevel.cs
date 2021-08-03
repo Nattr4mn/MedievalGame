@@ -5,17 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class EnterLevel : MonoBehaviour
 {
+    [SerializeField] Camera _camera;
     [SerializeField] private List<GameObject> _levelList;
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        if(Input.touchCount > 0)
-        //if(Input.GetMouseButton(0))
+        //if(Input.touchCount > 0)
+        if(Input.GetMouseButton(0))
         {
-            Touch touch = Input.GetTouch(0);
-            Ray ray = Camera.main.ScreenPointToRay(touch.position);
-            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //Touch touch = Input.GetTouch(0);
+            //Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit))
             {

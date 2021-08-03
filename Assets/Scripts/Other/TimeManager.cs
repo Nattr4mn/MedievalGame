@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
 public class TimeManager : MonoBehaviour
 {
 	public float CurrentTime => currentTime;
@@ -11,12 +10,24 @@ public class TimeManager : MonoBehaviour
 	[SerializeField] private float fullDay = 120f; // сколько длиться день, в секундах
 	[Range(0, 1)] 
 	[SerializeField] private float currentTime; // текущее время суток
+	[SerializeField] private Weekday _weekday;
+	private Save<TimeData> _timeSave;
 
 	private float h, m;
 	private string hour, min;
 
 	void Start()
 	{
+		_timeSave = new Save<TimeData>("TimeData");
+		_timeSave.LoadData();
+		if(_timeSave.Data != null)
+        {
+			DateTime exitTime = DateTime.Parse(_timeSave.Data.ExitTime);
+			TimeSpan deltaTime = DateTime.Now - exitTime;
+			currentTime = _timeSave.Data.CurrentTime + ((float)deltaTime.TotalSeconds / fullDay);
+
+			_weekday = _timeSave.Data.Weekday;
+		}
 		//_gameTime.text = "00:00";
 	}
 
@@ -26,7 +37,15 @@ public class TimeManager : MonoBehaviour
 
 		currentTime += Time.deltaTime / fullDay;
 
-		if (currentTime >= 1) currentTime = 0; else if (currentTime < 0) currentTime = 0;
+		if (currentTime >= 1)
+        {
+			currentTime = 0;
+			if (_weekday == Weekday.Sunday)
+				_weekday = Weekday.Monday;
+			else
+				_weekday++;
+		}
+
 
 		directionalLight.localRotation = Quaternion.Euler((currentTime * 360f) - 90, 170, 0);
 	}
@@ -41,4 +60,18 @@ public class TimeManager : MonoBehaviour
 
 		_gameTime.text = hour + ":" + min;
 	}
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+    private void OnApplicationPause(bool pause)
+    {
+		TimeData timeData = new TimeData() { CurrentTime = currentTime };
+		_timeSave.SaveData(timeData);
+    }
+#endif
+	private void OnApplicationQuit()
+	{
+		TimeData timeData = new TimeData() { ExitTime = DateTime.Now.ToString(), CurrentTime = currentTime, Weekday = _weekday };
+		_timeSave.SaveData(timeData);
+	}
+
 }
