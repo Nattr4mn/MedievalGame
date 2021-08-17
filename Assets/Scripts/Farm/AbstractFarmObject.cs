@@ -5,25 +5,24 @@ using UnityEngine.Events;
 
 
 [RequireComponent(typeof(Outline))]
-public abstract class FarmObject : MonoBehaviour
+[RequireComponent(typeof(FarmObjectLevel))]
+public abstract class AbstractFarmObject : MonoBehaviour
 {
     public abstract IItem ÑurrentObject { get; }
     public Player Player => _player;
-    public int Level { get => _level; set => _level = value; }
-    public bool IsActive { get => _isActive; set => _isActive = value; }
     public float Production => _production;
     public float Water => _water;
     public float Harvest => _harvest;
     public float Experience => _experience;
     public bool Occupied => _occupied;
     public bool CanCollect => _canCollect;
+    public FarmObjectLevel Level;
+    public bool IsActive = false;
 
     [SerializeField]    protected UnityEvent        Events;
     [SerializeField]    protected List<GameObject>  _spawnList;
     [SerializeField]    protected float             _productionTime = 36f;
-    [SerializeField]    protected bool              _isActive = false;
                         protected Player            _player;
-                        protected int               _level = 0;
                         protected float             _production = 0f;
                         protected float             _water = 0f;
                         protected float             _harvest;
@@ -38,10 +37,8 @@ public abstract class FarmObject : MonoBehaviour
 
     private void Start()
     {
-        if(_isActive)
-            gameObject.SetActive(true);
-        else
-            gameObject.SetActive(false);
+        Level = GetComponent<FarmObjectLevel>();
+        gameObject.SetActive(IsActive);
     }
 
     public virtual void PourWater()

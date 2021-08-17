@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-public abstract class Shed : ActivatedObject
+public abstract class Shed : ActivatableObject
 {
 
 }

@@ -4,13 +4,13 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Outline))]
-public class ForestPlants : ActivatedObject
+public class ForestPlants : ActivatableObject
 {
     [SerializeField] private Item _item;
     [Range(1, 3)][SerializeField] private float minimumNumberOfDrops = 1f;
     [Range(3, 5)] [SerializeField] private float maximumNumberOfDrops = 3f;
 
-    public override void ActivationAction()
+    public void ActivationAction()
     {
         var harvest = (int)Random.Range(minimumNumberOfDrops, maximumNumberOfDrops);
         var exp = harvest / (2 + Player.Characteristics.Level.Value);

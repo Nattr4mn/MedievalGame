@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class BuyFieldButton : MonoBehaviour
 {
-    [SerializeField] private float          _activationLevel;
-    [SerializeField] private float          _buildingTime;
-    [SerializeField] private float          _price;
-    [SerializeField] private FarmObject     _farmObject;
-    [SerializeField] private Button         _button;
-    [SerializeField] private GameObject     _upPanel;
-    [SerializeField] private ErrorWindow    _errorWindow;
-    [SerializeField] private Player         _player;
+    [SerializeField] private float              _activationLevel;
+    [SerializeField] private float              _buildingTime;
+    [SerializeField] private float              _price;
+    [SerializeField] private AbstractFarmObject _farmObject;
+    [SerializeField] private Button             _button;
+    [SerializeField] private GameObject         _upPanel;
+    [SerializeField] private ErrorWindow        _errorWindow;
+    [SerializeField] private Player             _player;
 
     private void OnEnable()
     {

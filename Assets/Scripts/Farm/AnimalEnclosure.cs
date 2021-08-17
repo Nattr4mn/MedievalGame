@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class AnimalEnclosure : FarmObject
+public class AnimalEnclosure : AbstractFarmObject
 {
     public override IItem ÑurrentObject => _currentAnimal;
     public float Food => _food;

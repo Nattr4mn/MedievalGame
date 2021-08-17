@@ -7016,10 +7016,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 491559379}
   _levelList:
-  - {fileID: 4445637}
-  - {fileID: 1047678001}
-  - {fileID: 1274993973}
   - {fileID: 1968135835}
+  - {fileID: 4445637}
+  - {fileID: 1274993973}
+  - {fileID: 1047678001}
 --- !u!1001 &345924644
 PrefabInstance:
   m_ObjectHideFlags: 0

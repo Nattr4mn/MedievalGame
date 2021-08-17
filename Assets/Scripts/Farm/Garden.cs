@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Garden : FarmObject
+public class Garden : AbstractFarmObject
 {
     public override IItem ÑurrentObject => _currentCrop;
     private Save<GardenData> _saveData;
@@ -127,7 +127,7 @@ public class Garden : FarmObject
         if (_saveData.Data != null)
         {
             DateTime exitTime = DateTime.Parse(_saveData.Data.saveTime);
-            _isActive = _saveData.Data.isActive;
+            IsActive = _saveData.Data.isActive;
             _production = _saveData.Data.production;
             _water = _saveData.Data.water;
             _occupied = _saveData.Data.occupied;
