@@ -16,22 +16,22 @@ public class Garden : AbstractFarmObject
 
     public override void Collecting()
     {
-        var playerEnergy = _player.NaturalNeeds.Energy.Value / _player.NaturalNeeds.Energy.MaxValue;
+        var playerEnergy = Player.NaturalNeeds.Energy.Value / Player.NaturalNeeds.Energy.MaxValue;
         ResetValue();
         StartCoroutine(Processing("Crops", _currentCrop.Name, false));
-        _harvest = (int)UnityEngine.Random.Range(5f, 10f * (1 + _player.Characteristics.Luck.Value / 10f));
+        _harvest = (int)UnityEngine.Random.Range(5f, 10f * (1 + Player.Characteristics.Luck.Value / 10f));
 
         if (playerEnergy <= 0.5f)
             _harvest *= (0.5f + playerEnergy);
 
-        _experience = _harvest / (2 + _player.Characteristics.Level.Value);
+        _experience = _harvest / (2 + Player.Characteristics.Level.Value);
         _currentCrop.Count += _harvest;
         _currentCrop.Seed.Count += (int)UnityEngine.Random.Range(5f, 10f);
     }
 
     public override void Fill(IItem item)
     {
-        PlayerItems playerItems = _player.Items;
+        PlayerItems playerItems = Player.Items;
         _currentCrop = (Crop)item;
 
         if (_currentCrop.Seed.Count >= 10 && playerItems.Bucket.Value > 0)
@@ -110,7 +110,6 @@ public class Garden : AbstractFarmObject
         GardenData gardenData = new GardenData()
         {
             saveTime = DateTime.Now.ToString(),
-            isActive = IsActive,
             production = Production,
             water = Water,
             occupied = Occupied,
@@ -127,7 +126,6 @@ public class Garden : AbstractFarmObject
         if (_saveData.Data != null)
         {
             DateTime exitTime = DateTime.Parse(_saveData.Data.saveTime);
-            IsActive = _saveData.Data.isActive;
             _production = _saveData.Data.production;
             _water = _saveData.Data.water;
             _occupied = _saveData.Data.occupied;

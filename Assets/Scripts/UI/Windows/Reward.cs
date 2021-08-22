@@ -12,10 +12,6 @@ public class Reward : MonoBehaviour
         _number.text = number;
         _awardIcon.sprite = icon;
         gameObject.SetActive(true);
-    }
-
-    private void OnEnable()
-    {
         StartCoroutine(Animation());
     }
 

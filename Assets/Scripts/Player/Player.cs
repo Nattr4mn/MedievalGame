@@ -10,11 +10,9 @@ public class Player : MonoBehaviour
     public PlayerCharacteristics Characteristics => _playerCharacteristics;
     public PlayerItems Items => _items;
     public NaturalNeeds NaturalNeeds => _naturalNeeds;
-    public PlayerReward Reward => _reward;
 
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private PlayerCharacteristics _playerCharacteristics;
     [SerializeField] private PlayerItems _items;
     [SerializeField] private NaturalNeeds _naturalNeeds;
-    [SerializeField] private PlayerReward _reward;
 }

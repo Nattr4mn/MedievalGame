@@ -14,7 +14,7 @@ public class AnimalEnclosure : AbstractFarmObject
     public override void Fill(IItem item)
     {
         _currentAnimal = (Animal)item;
-        PlayerItems playerItems = _player.Items;
+        PlayerItems playerItems = Player.Items;
 
         if (playerItems.Gold.Value > _currentAnimal.Price && playerItems.Bucket.Value > 0 && _currentAnimal.RequiredFood.Count >= 5)
         {
@@ -31,15 +31,15 @@ public class AnimalEnclosure : AbstractFarmObject
 
     public override void Collecting()
     {
-        var playerEnergy = _player.NaturalNeeds.Energy.Value / _player.NaturalNeeds.Energy.MaxValue;
+        var playerEnergy = Player.NaturalNeeds.Energy.Value / Player.NaturalNeeds.Energy.MaxValue;
         ResetValue();
         StartCoroutine(Processing("Animals", _currentAnimal.Name, false));
-        _harvest = (int)Random.Range(5f, 10f * (1 + _player.Characteristics.Luck.Value / 10f));
+        _harvest = (int)Random.Range(5f, 10f * (1 + Player.Characteristics.Luck.Value / 10f));
 
         if (playerEnergy <= 0.5f)
             _harvest *= (0.5f + playerEnergy);
 
-        _experience = _harvest / (2 + _player.Characteristics.Level.Value);
+        _experience = _harvest / (2 + Player.Characteristics.Level.Value);
         _currentAnimal.Meat.Count += _harvest;
         Events?.Invoke();
     }

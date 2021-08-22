@@ -41,11 +41,11 @@ public abstract class FarmUI : MonoBehaviour
             switch (_currentFarmObject.Occupied)
             {
                 case false:
-                    _player.Input.PlayerAction += SelectionWindow;
+                    InputUI.Instance.Action += SelectionWindow;
                     break;
                 case true:
                     if (_currentFarmObject.CanCollect)
-                        _player.Input.PlayerAction += Collecting;
+                        InputUI.Instance.Action += Collecting;
                     else
                         PanelsEnable(true);
                     break;
@@ -55,8 +55,8 @@ public abstract class FarmUI : MonoBehaviour
         {
             _sliderUpdate = false;
             PanelsEnable(false);
-            _player.Input.PlayerAction -= Collecting;
-            _player.Input.PlayerAction -= SelectionWindow;
+            InputUI.Instance.Action -= Collecting;
+            InputUI.Instance.Action -= SelectionWindow;
         }
     }
 
@@ -73,7 +73,7 @@ public abstract class FarmUI : MonoBehaviour
 
     private void Collecting()
     {
-        _player.Input.PlayerAction -= Collecting;
+        InputUI.Instance.Action -= Collecting;
         PanelsEnable(false);
         _currentFarmObject.Collecting();
         StartCoroutine(Awards());

@@ -16,10 +16,10 @@ public class EnclosureUI : FarmUI
 
     public override void Fill()
     {
-        Player.Input.ActionButton.gameObject.SetActive(true);
+        InputUI.Instance.ActionButton.gameObject.SetActive(true);
         if (Player.Items.Gold.Value >= _currentAnimal.Price && Player.Items.Bucket.Value > 0 && _currentAnimal.RequiredFood.Count > 5f)
         {
-            Player.Input.PlayerAction -= SelectionWindow;
+            InputUI.Instance.Action -= SelectionWindow;
             Selection.gameObject.SetActive(false);
             ÑurrentFarmObject.Fill(_currentAnimal);
         }
@@ -33,7 +33,7 @@ public class EnclosureUI : FarmUI
 
     public override void SelectionWindow()
     {
-        Player.Input.ActionButton.gameObject.SetActive(false);
+        InputUI.Instance.ActionButton.gameObject.SetActive(false);
         Selection.Init(ItemsList);
         Selection.gameObject.SetActive(true);
     }

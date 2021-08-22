@@ -15,10 +15,10 @@ public class GardenUI : FarmUI
     public override void Fill()
     {
         Crop item = (Crop)_crop;
-        Player.Input.ActionButton.gameObject.SetActive(true);
+        InputUI.Instance.ActionButton.gameObject.SetActive(true);
         if (Player.Items.Bucket.Value > 0 && item.Count >= 10)
         {
-            Player.Input.PlayerAction -= SelectionWindow;
+            InputUI.Instance.Action -= SelectionWindow;
             Selection.gameObject.SetActive(false);
             ÑurrentFarmObject.Fill(_crop);
         }
@@ -32,7 +32,7 @@ public class GardenUI : FarmUI
 
     public override void SelectionWindow()
     {
-        Player.Input.ActionButton.gameObject.SetActive(false);
+        InputUI.Instance.ActionButton.gameObject.SetActive(false);
         _itemsList = Player.Items.CropList.Select(crop => (IItem)crop).ToList();
         print(_itemsList[0].Name);
         Selection.Init(_itemsList);

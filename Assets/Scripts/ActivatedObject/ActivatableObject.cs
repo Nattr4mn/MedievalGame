@@ -6,7 +6,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Outline))]
 public class ActivatableObject : MonoBehaviour
 {
-    public Player Player;
+    public Player Player { get; private set; }
     public UnityEvent Events;
 
     private void OnTriggerEnter(Collider other)

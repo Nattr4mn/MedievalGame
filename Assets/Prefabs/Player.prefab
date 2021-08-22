@@ -140,8 +140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4c8d0c481593264d8844e7e6c4553b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _joystick: {fileID: 0}
-  _action: {fileID: 0}
   _playerObject: {fileID: 7085574102959764813}
   _animator: {fileID: 4611396172883572109}
   _rigidbody: {fileID: 7968114358222373514}
@@ -236,7 +234,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 2
+  near clip plane: 0.01
   far clip plane: 40
   field of view: 60
   orthographic: 0

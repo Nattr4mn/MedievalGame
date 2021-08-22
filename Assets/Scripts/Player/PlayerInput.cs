@@ -5,13 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerInput : MonoBehaviour
 {
-    public Button ActionButton => _action;
-
-    public delegate void Action();
-    public event Action PlayerAction;
-
-    [SerializeField] private Joystick _joystick;
-    [SerializeField] private Button _action;
     [SerializeField] private GameObject _playerObject;
     [SerializeField] private Animator _animator;
     [SerializeField] private Rigidbody _rigidbody;
@@ -27,15 +20,15 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_joystick.Vertical != 0 && !isLocked)
+        if (InputUI.Instance.Joystick.Vertical != 0 && !isLocked)
         {
             _animator.SetBool("isRunning", true);
             _playerMovement.Move();
 
-            if (_joystick.Vertical > 0)
-                _playerMovement.Rotate(90f * _joystick.Horizontal);
-            else if (_joystick.Vertical < 0)
-                _playerMovement.Rotate(180f + (-90f) * _joystick.Horizontal);
+            if (InputUI.Instance.Joystick.Vertical > 0)
+                _playerMovement.Rotate(90f * InputUI.Instance.Joystick.Horizontal);
+            else if (InputUI.Instance.Joystick.Vertical < 0)
+                _playerMovement.Rotate(180f + (-90f) * InputUI.Instance.Joystick.Horizontal);
         }
         else
         {
@@ -46,14 +39,14 @@ public class PlayerInput : MonoBehaviour
     public void Collecting()
     {
         isLocked = true;
-        PlayerAction -= Collecting;
+        InputUI.Instance.Action -= Collecting;
         StartCoroutine(CollectingCoroutine("gathering"));
     }
 
     public void PickUp()
     {
         isLocked = true;
-        PlayerAction -= PickUp;
+        InputUI.Instance.Action -= PickUp;
         StartCoroutine(CollectingCoroutine("pickup"));
     }
 
@@ -62,10 +55,5 @@ public class PlayerInput : MonoBehaviour
         _animator.SetTrigger(animationName);
         yield return new WaitForSeconds(3f);
         isLocked = false;
-    }
-
-    public void OnAction()
-    {
-        PlayerAction?.Invoke();
     }
 }

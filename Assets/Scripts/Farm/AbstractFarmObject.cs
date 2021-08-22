@@ -6,29 +6,33 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof(Outline))]
 [RequireComponent(typeof(FarmObjectLevel))]
+[RequireComponent(typeof(Structure))]
 public abstract class AbstractFarmObject : MonoBehaviour
 {
     public abstract IItem ÑurrentObject { get; }
-    public Player Player => _player;
     public float Production => _production;
     public float Water => _water;
     public float Harvest => _harvest;
     public float Experience => _experience;
     public bool Occupied => _occupied;
     public bool CanCollect => _canCollect;
-    public FarmObjectLevel Level;
-    public bool IsActive = false;
+    public FarmObjectLevel Level => _level;
+    public Structure Structure => _structure;
+    public Player Player => _player;
+    public UnityEvent Events;
 
-    [SerializeField]    protected UnityEvent        Events;
     [SerializeField]    protected List<GameObject>  _spawnList;
     [SerializeField]    protected float             _productionTime = 36f;
-                        protected Player            _player;
                         protected float             _production = 0f;
                         protected float             _water = 0f;
                         protected float             _harvest;
                         protected float             _experience;
                         protected bool              _occupied = false;
                         protected bool              _canCollect = false;
+
+    [SerializeField] private Player _player;
+    private FarmObjectLevel _level;
+    private Structure _structure;
 
     public abstract void Fill(IItem item);
     public abstract void Collecting();
@@ -37,8 +41,9 @@ public abstract class AbstractFarmObject : MonoBehaviour
 
     private void Start()
     {
-        Level = GetComponent<FarmObjectLevel>();
-        gameObject.SetActive(IsActive);
+        _level = GetComponent<FarmObjectLevel>();
+        _structure = GetComponent<Structure>();
+        _structure.Init(_player);
     }
 
     public virtual void PourWater()

@@ -1,25 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 
 [RequireComponent(typeof(Outline))]
-public class ForestPlants : ActivatableObject
+[RequireComponent(typeof(ActivatableObject))]
+public class ForestPlants : MonoBehaviour
 {
     [SerializeField] private Item _item;
     [Range(1, 3)][SerializeField] private float minimumNumberOfDrops = 1f;
     [Range(3, 5)] [SerializeField] private float maximumNumberOfDrops = 3f;
+    private ActivatableObject _activatableObject;
 
-    public void ActivationAction()
+    private void Start()
     {
-        var harvest = (int)Random.Range(minimumNumberOfDrops, maximumNumberOfDrops);
-        var exp = harvest / (2 + Player.Characteristics.Level.Value);
-        Player.Input.PlayerAction -= ActivationAction;
+        _activatableObject = GetComponent<ActivatableObject>();
+        _activatableObject.Events.AddListener(OnAction);
+    }
 
-        Player.Input.Collecting();
-        Player.Characteristics.AddExperience(exp);
-        Player.Reward.ShowRewards(_item.UiIcon, harvest, exp);
+    public void OnAction()
+    {
+        if (_activatableObject.Player != null)
+            InputUI.Instance.Action += PlantCollect;
+        else
+            InputUI.Instance.Action -= PlantCollect;
+    }
+
+    private void PlantCollect()
+    {
+        var harvest = (int)UnityEngine.Random.Range(minimumNumberOfDrops, maximumNumberOfDrops);
+        var exp = harvest / (2 + _activatableObject.Player.Characteristics.Level.Value);
+        InputUI.Instance.Action -= PlantCollect;
+
+        _activatableObject.Player.Input.Collecting();
+        RewardForPlant(harvest, exp);
+        gameObject.SetActive(false);
+    }
+
+    private void RewardForPlant(float harvest, float exp)
+    {
+        var reward = InputUI.Instance.Reward;
+        var harverReward = Tuple.Create(_item.UiIcon, harvest);
+        var expReward = Tuple.Create(reward.ExpIcon, exp);
+
+        reward.ShowRewards(harverReward, expReward);
+        _activatableObject.Player.Characteristics.AddExperience(exp);
         _item.Count += harvest;
-        Destroy(gameObject);
     }
 }
