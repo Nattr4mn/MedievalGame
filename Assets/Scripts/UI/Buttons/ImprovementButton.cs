@@ -22,9 +22,9 @@ public class ImprovementButton : MonoBehaviour
 
     public void Improvement()
     {
-        if (_farmObject.Structure.IsBuilt && _farmObject.Level.CurrentLevel < _farmObject.Level.MaxLevel)
-            _button.onClick.AddListener(_farmObject.Level.LevelUp);
-        else
-            _button.onClick.AddListener(_farmObject.Structure.Build);
+        //if (_farmObject.Structure.IsBuilt && _farmObject.Level.CurrentLevel < _farmObject.Level.MaxLevel)
+        //    _button.onClick.AddListener(_farmObject.Level.LevelUp);
+        //else
+        //    _button.onClick.AddListener(_farmObject.Structure.Build);
     }
 }

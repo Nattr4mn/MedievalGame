@@ -8,28 +8,28 @@ public class SelectionWindow : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private Transform _container;
     [SerializeField] private GameObject _buttonTemplate;
-    [SerializeField] private FarmUI _farmUi;
-    private List<IItem> _itemList;
+    [SerializeField] private AbstractFarmUI _farmUi;
+    private List<GameObject> _buttonPool = new List<GameObject>();
 
-    public void Init(List<IItem> itemList)
+    public void Init(List<IFarmProduct> productList)
     {
-        _itemList = itemList;
+        productList.ForEach(item =>
+        {
+            var seed = Instantiate(_buttonTemplate, _container);
+            seed.gameObject.name = item.ProductName;
+            seed.GetComponent<ISelectionButton>().Init(_farmUi, item);
+            _buttonPool.Add(seed);
+        });
     }
 
     private void OnDisable()
     {
-        foreach (Transform child in _container)
-            Destroy(child.gameObject);
+        _buttonPool.ForEach(item => { item.SetActive(false); });
     }
 
     private void OnEnable()
     {
-        _itemList.ForEach(item =>
-        {
-            var seed = Instantiate(_buttonTemplate, _container);
-            seed.gameObject.name = item.Name;
-            seed.GetComponent<ISelectionButton>().Init(_farmUi, item);
-        });
+        _buttonPool.ForEach(item => { item.SetActive(true); });
     }
 }
 

@@ -1,179 +1,130 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Garden : AbstractFarmObject
 {
-    public override IItem ÑurrentObject => _currentCrop;
-    private Save<GardenData> _saveData;
-    private Crop _currentCrop;
-
-    private void Awake()
+    private void Start()
     {
-        LoadGarden();
+        
     }
 
-    public override void Collecting()
+    public override void Init()
     {
-        var playerEnergy = Player.NaturalNeeds.Energy.Value / Player.NaturalNeeds.Energy.MaxValue;
-        ResetValue();
-        StartCoroutine(Processing("Crops", _currentCrop.Name, false));
-        _harvest = (int)UnityEngine.Random.Range(5f, 10f * (1 + Player.Characteristics.Luck.Value / 10f));
+        throw new System.NotImplementedException();
+    }
+
+    public override Tuple<IFarmProduct, int> Collecting(int playerLevel, float playerEnergy, out int playerExperience)
+    {
+        SeedProduct product = (SeedProduct)_currentContent.Product;
+        var seed = UnityEngine.Random.Range(8f, 16f);
+        var harvest = UnityEngine.Random.Range(5f, 10f);
 
         if (playerEnergy <= 0.5f)
-            _harvest *= (0.5f + playerEnergy);
-
-        _experience = _harvest / (2 + Player.Characteristics.Level.Value);
-        _currentCrop.Count += _harvest;
-        _currentCrop.Seed.Count += (int)UnityEngine.Random.Range(5f, 10f);
-    }
-
-    public override void Fill(IItem item)
-    {
-        PlayerItems playerItems = Player.Items;
-        _currentCrop = (Crop)item;
-
-        if (_currentCrop.Seed.Count >= 10 && playerItems.Bucket.Value > 0)
         {
-            _occupied = true;
-            _currentCrop.Seed.Count -= 10;
-            _production = 0;
-            _water = playerItems.Bucket.Value;
-            playerItems.Bucket.Value = 0;
-            StartCoroutine(Processing("Crops", _currentCrop.Name, true));
-            StartCoroutine(ProcessOfGrowth());
+            harvest *= (0.5f + playerEnergy);
         }
 
-        Events?.Invoke();
+        product.Quantity += (int)seed;
+        product.DerivedProduct.Quantity += (int)harvest;
+        playerExperience = (int)(harvest / (2 + playerLevel));
+        Clear();
+        InteractiveObject.Events?.Invoke(InteractiveObject);
+        return new Tuple<IFarmProduct, int>(product, (int)harvest);
     }
 
-    public override IEnumerator ProcessOfGrowth()
+    public override bool TryFill(string objectName, float water)
     {
-        var productionMultiplier = 1f;
-        yield return new WaitForSeconds(3f);
-
-        while (_production < 1)
+        _currentContent = (GardenContent)ContentList.Where(content => content.Product.ProductName == objectName).FirstOrDefault();
+        print(_currentContent);
+        SeedProduct seed = (SeedProduct)_currentContent.Product;
+        if (seed.Quantity >= 10)
         {
-            productionMultiplier = _water <= 0 ? -1f : 1f;
-            _production += productionMultiplier * (1 / _productionTime);
-            if(_water >= 0)
-                _water -= 1 / (_productionTime / 2);
+            _waterLevel = water;
+            _occupied = true;
+            _currentContent.gameObject.SetActive(true);
+            seed.Quantity -= 10;
+            StartProcessOfGrowth();
+            InteractiveObject.Events?.Invoke(InteractiveObject);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-            yield return new WaitForSeconds(1f);
+    public override void StartProcessOfGrowth()
+    {
+        StartCoroutine(ProcessOfGrowth());
+    }
 
-            Events?.Invoke();
-            if (_production <= 0 && _water <= 0)
+    public override void StartSpoil(SpoilOperation RootingOperation)
+    {
+        StartCoroutine(Spoil(RootingOperation));
+    }
+
+    private IEnumerator ProcessOfGrowth()
+    {
+        while (_currentContent?.ProductionStage < 1f || _occupied)
+        {
+            yield return new WaitForSeconds(1f/30f);
+
+            if (_waterLevel >= 0)
             {
-                transform.Find("Crops").transform.Find(_currentCrop.Name).gameObject.SetActive(false);
-                ResetValue();
+                _waterLevel -= 1f / ((ProductionTime) / 3f);
+                _currentContent.Growth(1f / (ProductionTime));
+            }
+            else
+            {
+                StartSpoil(Drying);
+            }
+        }
+
+        if(_occupied)
+        {
+            StartSpoil(Rotting);
+        }
+    }
+
+    private bool Rotting()
+    {
+        return _currentContent.CanCollect;
+    }
+
+    private bool Drying()
+    {
+        return _waterLevel <= 0;
+    }
+
+    private IEnumerator Spoil(SpoilOperation RootingOperation)
+    {
+        var rootingTime = ProductionTime / 4;
+
+        while (_spoilTime < rootingTime)
+        {
+            _spoilTime += 1f;
+            yield return new WaitForSeconds(1f);
+            if(!RootingOperation())
+            {
                 break;
             }
         }
-        if(_production >= 1f)
-            StartCoroutine(TimerToDestroy());
-    }
+        _spoilTime = 0f;
 
-    public override IEnumerator TimerToDestroy()
-    {
-        _canCollect = true;
-        Events?.Invoke();
-        yield return new WaitForSeconds(360f);
-        if(_canCollect)
+        if (RootingOperation())
         {
-            transform.Find("Crops").transform.Find(_currentCrop.Name).gameObject.SetActive(false);
-            ResetValue();
+            Clear();
         }
+        InteractiveObject.Events?.Invoke(InteractiveObject);
     }
 
-    private void ResetValue()
+    private void Clear()
     {
+        _waterLevel = 0f;
         _occupied = false;
-        _canCollect = false;
-        _water = 0;
-        _production = 0;
-    }
-
-#if UNITY_ANDROID && !UNITY_EDITOR
-    private void OnApplicationPause(bool pause)
-    {
-        SaveGarden();
-    }
-#endif
-    private void OnApplicationQuit()
-    {
-        SaveGarden();
-    }
-
-    private void SaveGarden()
-    {
-        GardenData gardenData = new GardenData()
-        {
-            saveTime = DateTime.Now.ToString(),
-            production = Production,
-            water = Water,
-            occupied = Occupied,
-            canCollect = CanCollect,
-            currentCrop = _currentCrop
-        };
-        _saveData.SaveData(gardenData);
-    }
-    
-    private void LoadGarden()
-    {
-        _saveData = new Save<GardenData>(gameObject.name);
-        _saveData.LoadData();
-        if (_saveData.Data != null)
-        {
-            DateTime exitTime = DateTime.Parse(_saveData.Data.saveTime);
-            _production = _saveData.Data.production;
-            _water = _saveData.Data.water;
-            _occupied = _saveData.Data.occupied;
-            _canCollect = _saveData.Data.canCollect;
-            _currentCrop = _saveData.Data.currentCrop;
-
-
-            int timeProduction = (int)((_productionTime - (_productionTime * _production)));
-            int timeWater = (int)(((_productionTime / 2) - ((_productionTime / 2) * _water)));
-            DateTime currentTime = DateTime.Now;
-            TimeSpan timeDifference = currentTime - exitTime;
-            int seconds = (int)timeDifference.TotalSeconds;
-
-            if (_occupied)
-            {
-                if (timeWater >= seconds)
-                {
-                    timeWater = timeWater - seconds;
-                    _water -= (1 / (_productionTime / 2)) * seconds;
-                    _production += (1 / _productionTime) * seconds;
-                    if (_production >= 1)
-                    {
-                        _production = 1f;
-                        _canCollect = true;
-                        transform.Find("Crops").transform.Find(_currentCrop.Name).gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        StartCoroutine(ProcessOfGrowth());
-                        transform.Find("Crops").transform.Find(_currentCrop.Name).gameObject.SetActive(true);
-                    }
-
-                }
-                else
-                {
-                    var differenceSeconds = timeWater - seconds;
-                    _water = 0;
-                    _production -= (1 / _productionTime) * differenceSeconds;
-                    if(_production > 0)
-                    {
-                        StartCoroutine(ProcessOfGrowth());
-                        transform.Find("Crops").transform.Find(_currentCrop.Name).gameObject.SetActive(true);
-                    }
-                }
-            }
-
-        }
+        _currentContent.Execute();
+        _currentContent = null;
     }
 }
-
-

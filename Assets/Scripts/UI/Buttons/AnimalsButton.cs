@@ -8,21 +8,21 @@ public class AnimalsButton : MonoBehaviour, ISelectionButton
     [SerializeField] private Text _priceText;
     [SerializeField] private Image _requiredFoodImage;
     [SerializeField] private Image _image;
-    private FarmUI _farmUi;
-    private Animal _animal;
+    private AbstractFarmUI _farmUi;
+    //private Animal _animal;
 
-    public void Init(FarmUI farmUi, IItem item)
+    public void Init(AbstractFarmUI farmUi, IFarmProduct item)
     {
-        _animal = (Animal)item;
-        _farmUi = farmUi;
-        _priceText.text = _animal.Price.ToString();
-        _requiredFoodImage.sprite = _animal.RequiredFood.UiIcon;
-        _image.sprite = _animal.UiIcon;
+        //_animal = (Animal)item;
+        //_farmUi = farmUi;
+        //_priceText.text = _animal.Price.ToString();
+        //_requiredFoodImage.sprite = _animal.RequiredFood.UiIcon;
+        //_image.sprite = _animal.UiIcon;
     }
 
     public void Action()
     {
-        _farmUi.ExtractedResource = _animal;
-        _farmUi.Fill();
+        //_farmUi.ExtractedResource = _animal;
+        //_farmUi.Fill();
     }
 }

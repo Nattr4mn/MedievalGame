@@ -5,15 +5,10 @@ using UnityEngine;
 
 public class PlayerItems : MonoBehaviour
 {
-    public List<Crop> CropList => _cropList;
-    public List<Item> ItemsList => _itemsList;
     public Characteristic Food => _food;
     public Characteristic Gold => _gold;
     public Characteristic Bucket => _bucket;
 
-
-    [SerializeField] private List<Crop> _cropList;
-    [SerializeField] private List<Item> _itemsList;
     [SerializeField] private Characteristic _food;
     [SerializeField] private Characteristic _gold;
     [SerializeField] private Characteristic _bucket;

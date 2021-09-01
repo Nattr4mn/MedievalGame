@@ -7,22 +7,19 @@ public class SeedsButton : MonoBehaviour, ISelectionButton
 {
     [SerializeField] private Text _text;
     [SerializeField] private Image _image;
-    private FarmUI _farmUi;
-    private Crop _crop;
+    private AbstractFarmUI _farmUi;
+    private SeedProduct _product;
 
-    public void Init(FarmUI farmUi, IItem item)
+    public void Init(AbstractFarmUI farmUi, IFarmProduct product)
     {
-        _crop = (Crop)item;
-        _text.text = _crop.Seed.Count.ToString();
-        _image.sprite = _crop.Seed.UiIcon;
+        _product = (SeedProduct)product;
+        _text.text = _product.Quantity.ToString();
+        _image.sprite = _product.UIIcon;
         _farmUi = farmUi;
     }
 
     public void Action()
     {
-        print(_crop.Name);
-        print(_farmUi);
-        _farmUi.ExtractedResource = _crop;
-        _farmUi.Fill();
+        _farmUi.Fill(_product.ProductName);
     }
 }

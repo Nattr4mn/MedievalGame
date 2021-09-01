@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -21,12 +19,14 @@ public class Save<T> : MonoBehaviour
 #endif
     }
 
-    public void LoadData()
+    public T LoadData()
     {
         if (File.Exists(_path))
         {
+            print(_path);
             _data = JsonUtility.FromJson<T>(File.ReadAllText(_path));
         }
+        return _data;
     }
 
     public void SaveData(T data)

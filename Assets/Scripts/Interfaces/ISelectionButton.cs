@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface ISelectionButton
 {
-    void Init(FarmUI farmUi, IItem item);
+    void Init(AbstractFarmUI farmUi, IFarmProduct product);
     void Action();
 }

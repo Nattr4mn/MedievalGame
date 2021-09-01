@@ -20,14 +20,14 @@ public class ResourceWindow : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.GetComponent<PlayerItems>().CropList.ForEach(item =>
-        {
-            var crop = Instantiate(_resourceLineTemplate, _harvestContainer);
-            crop.Render(item);
+        //_player.GetComponent<PlayerItems>().CropList.ForEach(item =>
+        //{
+        //    var crop = Instantiate(_resourceLineTemplate, _harvestContainer);
+        //    crop.Render(item);
 
-            var seed = Instantiate(_resourceLineTemplate, _seedContainer);
-            seed.Render(item.Seed);
-        });
+        //    var seed = Instantiate(_resourceLineTemplate, _seedContainer);
+        //    seed.Render(item.Seed);
+        //});
     }
 
     public void Enable(bool state)

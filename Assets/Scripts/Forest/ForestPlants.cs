@@ -3,18 +3,18 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Outline))]
-[RequireComponent(typeof(ActivatableObject))]
+[RequireComponent(typeof(InteractiveObject))]
 public class ForestPlants : MonoBehaviour
 {
-    [SerializeField] private Item _item;
+    [SerializeField] private DerivedProduct _product;
     [Range(1, 3)][SerializeField] private float minimumNumberOfDrops = 1f;
     [Range(3, 5)] [SerializeField] private float maximumNumberOfDrops = 3f;
-    private ActivatableObject _activatableObject;
+    private InteractiveObject _activatableObject;
 
     private void Start()
     {
-        _activatableObject = GetComponent<ActivatableObject>();
-        _activatableObject.Events.AddListener(OnAction);
+        _activatableObject = GetComponent<InteractiveObject>();
+        //_activatableObject.Events.AddListener(OnAction);
     }
 
     public void OnAction()
@@ -28,22 +28,22 @@ public class ForestPlants : MonoBehaviour
     private void PlantCollect()
     {
         var harvest = (int)UnityEngine.Random.Range(minimumNumberOfDrops, maximumNumberOfDrops);
-        var exp = harvest / (2 + _activatableObject.Player.Characteristics.Level.Value);
+        //var exp = harvest / (2 + _activatableObject.Player.Characteristics.Level.Value);
         InputUI.Instance.Action -= PlantCollect;
 
         _activatableObject.Player.Input.Collecting();
-        RewardForPlant(harvest, exp);
+        //RewardForPlant(harvest, exp);
         gameObject.SetActive(false);
     }
 
     private void RewardForPlant(float harvest, float exp)
     {
         var reward = InputUI.Instance.Reward;
-        var harverReward = Tuple.Create(_item.UiIcon, harvest);
+        var harverReward = Tuple.Create(_product.UIIcon, harvest);
         var expReward = Tuple.Create(reward.ExpIcon, exp);
 
         reward.ShowRewards(harverReward, expReward);
-        _activatableObject.Player.Characteristics.AddExperience(exp);
-        _item.Count += harvest;
+        //_activatableObject.Player.Characteristics.AddExperience(exp);
+        _product.Quantity += (int)harvest;
     }
 }

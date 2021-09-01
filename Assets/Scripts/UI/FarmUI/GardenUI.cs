@@ -4,49 +4,60 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GardenUI : FarmUI
+public class GardenUI : AbstractFarmUI
 {
-    public override IItem ExtractedResource { get => _crop; set => _crop = value; }
-    public override List<IItem> ItemsList => _itemsList;
 
-    [SerializeField] private List<IItem> _itemsList;
-    [SerializeField] private IItem _crop;
-
-    public override void Fill()
+    public override void Fill(string objectName)
     {
-        Crop item = (Crop)_crop;
         InputUI.Instance.ActionButton.gameObject.SetActive(true);
-        if (Player.Items.Bucket.Value > 0 && item.Count >= 10)
+        if (Player.Items.Bucket.Value > 0)
         {
-            InputUI.Instance.Action -= SelectionWindow;
-            Selection.gameObject.SetActive(false);
-            ÑurrentFarmObject.Fill(_crop);
+            if (ÑurrentFarmObject.TryFill(objectName, Player.Items.Bucket.Value))
+            {
+                Player.Input.Collecting();
+                InputUI.Instance.Action -= SelectionWindow;
+                Player.Items.Bucket.Value = 0f;
+                Selection.gameObject.SetActive(false);
+            }
+            else
+            {
+                ShowError("Íåäîñòàòî÷íî ñåìÿí!");
+            }
         }
         else
         {
-            Selection.gameObject.SetActive(false);
-            Error.gameObject.SetActive(true);
-            Error.Init("Íåäîñòàòî÷íî ðåñóðñîâ!");
+            ShowError("Íåäîñòàòî÷íî âîäû!");
         }
+    }
+
+    private void ShowError(string message)
+    {
+        Selection.gameObject.SetActive(false);
+        Error.gameObject.SetActive(true);
+        Error.Show(message);
     }
 
     public override void SelectionWindow()
     {
         InputUI.Instance.ActionButton.gameObject.SetActive(false);
-        _itemsList = Player.Items.CropList.Select(crop => (IItem)crop).ToList();
-        print(_itemsList[0].Name);
-        Selection.Init(_itemsList);
+        List<IFarmProduct> products = new List<IFarmProduct>();
+
+        ÑurrentFarmObject.ContentList.ForEach(product => 
+        { 
+            products.Add(product.Product); 
+        });
+
+        Selection.Init(products);
         Selection.gameObject.SetActive(true);
     }
 
     public override IEnumerator SliderUpdate()
     {
-        _sliderUpdate = true;
-        while (_sliderUpdate)
+        while (ÑurrentFarmObject != null)
         {
             _statusPanel.transform.position = Camera.main.WorldToScreenPoint(ÑurrentFarmObject.transform.position);
-            _productionSlider.value = ÑurrentFarmObject.Production;
-            _waterSlider.value = ÑurrentFarmObject.Water;
+            _productionSlider.value = ÑurrentFarmObject.ÑurrentContent.ProductionStage;
+            _waterSlider.value = ÑurrentFarmObject.WaterLevel;
             yield return new WaitForSeconds(0.01f);
         }
     }

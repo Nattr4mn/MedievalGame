@@ -7,8 +7,9 @@ public class ErrorWindow : MonoBehaviour
 {
     [SerializeField] private Text _errorText;
 
-    public void Init(string errorText)
+    public void Show(string errorText)
     {
         _errorText.text = errorText;
+        gameObject.SetActive(true);
     }
 }

@@ -1,85 +1,58 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-
-[RequireComponent(typeof(Outline))]
 [RequireComponent(typeof(FarmObjectLevel))]
 [RequireComponent(typeof(Structure))]
+[RequireComponent(typeof(InteractiveObject))]
 public abstract class AbstractFarmObject : MonoBehaviour
 {
-    public abstract IItem ÑurrentObject { get; }
-    public float Production => _production;
-    public float Water => _water;
-    public float Harvest => _harvest;
-    public float Experience => _experience;
+    public string FarmObjectName => _gardenName;
+    public float WaterLevel => _waterLevel;
+    public float ProductionTime => _productionTime;
+    public bool Spoil => _spoil;
+    public float SpoilTime => _spoilTime;
     public bool Occupied => _occupied;
-    public bool CanCollect => _canCollect;
-    public FarmObjectLevel Level => _level;
-    public Structure Structure => _structure;
-    public Player Player => _player;
-    public UnityEvent Events;
+    public AbstractFarmContent ÑurrentContent => _currentContent;
+    public List<AbstractFarmContent> ContentList => _contentList;
+    public FarmObjectLevel Level { get; private set; }
+    public Structure Structure { get; private set; }
+    public InteractiveObject InteractiveObject { get; private set; }
+    public delegate bool SpoilOperation();
 
-    [SerializeField]    protected List<GameObject>  _spawnList;
-    [SerializeField]    protected float             _productionTime = 36f;
-                        protected float             _production = 0f;
-                        protected float             _water = 0f;
-                        protected float             _harvest;
-                        protected float             _experience;
-                        protected bool              _occupied = false;
-                        protected bool              _canCollect = false;
+    private protected GardenContent _currentContent;
+    private protected float _waterLevel;
+    private protected bool _spoil;
+    private protected float _spoilTime;
+    private protected bool _occupied;
 
-    [SerializeField] private Player _player;
-    private FarmObjectLevel _level;
-    private Structure _structure;
+    [SerializeField] private string _gardenName;
+    [SerializeField] private float _productionTime;
+    [SerializeField] private List<AbstractFarmContent> _contentList;
 
-    public abstract void Fill(IItem item);
-    public abstract void Collecting();
-    public abstract IEnumerator ProcessOfGrowth();
-    public abstract IEnumerator TimerToDestroy();
+    //bool occupied, float waterLevel, float productionStage, bool canCollect, string productName
 
-    private void Start()
+    public abstract void Init();
+    public abstract bool TryFill(string objectName, float water);
+    public abstract Tuple<IFarmProduct, int> Collecting(int playerLevel, float playerEnergy, out int playerExperience);
+    public abstract void StartProcessOfGrowth();
+    public abstract void StartSpoil(SpoilOperation RootingOperation);
+
+    public void AddWater(float value)
     {
-        _level = GetComponent<FarmObjectLevel>();
-        _structure = GetComponent<Structure>();
-        _structure.Init(_player);
+        if (value > 0f)
+            _waterLevel += value;
+        if (_waterLevel > 1f)
+            _waterLevel = 1f;
     }
 
-    public virtual void PourWater()
+    private void Awake()
     {
-        PlayerItems playerItems = _player.Items;
-        _water += playerItems.Bucket.Value;
-        playerItems.Bucket.Value = 0;
-
-        if (_water > 1)
-            _water = 1;
-    }
-
-    protected virtual IEnumerator Processing(string objectParent, string obj, bool state)
-    {
-        _player.Input.Collecting();
-        yield return new WaitForSeconds(3f);
-        transform.Find(objectParent).transform.Find(obj).gameObject.SetActive(state);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            GetComponent<Outline>().enabled = true;
-            _player = other.GetComponent<Player>();
-            Events?.Invoke();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            GetComponent<Outline>().enabled = false;
-            _player = null;
-            Events?.Invoke();
-        }
+        Level = GetComponent<FarmObjectLevel>();
+        Structure = GetComponent<Structure>();
+        InteractiveObject = GetComponent<InteractiveObject>();
+        ContentList.ForEach(content => content.gameObject.SetActive(false));
     }
 }
