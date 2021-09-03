@@ -7,12 +7,12 @@ public class FarmData : AbstractSavedObject<AbstractFarmObject>
 {
     private string _saveFileName = "";
     public Data SavedData = new Data();
-    private AbstractFarmObject _savedObject;
+    private AbstractFarmObject _farmObject;
 
     public override void Load(AbstractFarmObject savedObject)
     {
         _saveFileName = savedObject.FarmObjectName;
-        _savedObject = savedObject;
+        _farmObject = savedObject;
         Save<Data> saveData = new Save<Data>(_saveFileName);
         SavedData = saveData.LoadData();
 
@@ -43,24 +43,29 @@ public class FarmData : AbstractSavedObject<AbstractFarmObject>
 
     public override void Save()
     {
-        SavedData.SaveTime                  = DateTime.Now.ToString();
-        SavedData.Occupied                  = _savedObject.Occupied;
-        SavedData.WaterLevel                = _savedObject.WaterLevel;
-        SavedData.Spoil                     = _savedObject.Spoil;
-        SavedData.SpoilTime                 = _savedObject.SpoilTime;
-        SavedData.ProductionStage           = _savedObject.—urrentContent.ProductionStage;
-        SavedData.CanCollect                = _savedObject.—urrentContent.CanCollect;
-        SavedData.ProductName               = _savedObject.—urrentContent.Name;
-        SavedData.IsBuilt                   = _savedObject.Structure.IsBuilt;
-        SavedData.CurrentConstructionTime   = _savedObject.Structure.CurrentConstructionTime;
-        SavedData.Under—onstruction         = _savedObject.Structure.Under—onstruction;
-        SavedData.GardenLevel               = _savedObject.Level.CurrentLevel;
+        if(_farmObject.Structure.Under—onstruction || _farmObject.Structure.IsBuilt)
+        {
+            Save<Data> saveData = new Save<Data>(_saveFileName);
+            SavedData.SaveTime = DateTime.Now.ToString();
+            SavedData.Occupied = _farmObject.Occupied;
+            SavedData.WaterLevel = _farmObject.WaterLevel;
+            SavedData.IsSpoil = _farmObject.Spoiling.IsSpoil;
+            SavedData.SpoilTime = _farmObject.Spoiling.SpoilTime;
+            SavedData.ProductionStage = _farmObject.—urrentContent.ProductionStage;
+            SavedData.CanCollect = _farmObject.—urrentContent.CanCollect;
+            SavedData.ProductName = _farmObject.—urrentContent.Name;
+            SavedData.IsBuilt = _farmObject.Structure.IsBuilt;
+            SavedData.CurrentConstructionTime = _farmObject.Structure.CurrentConstructionTime;
+            SavedData.Under—onstruction = _farmObject.Structure.Under—onstruction;
+            SavedData.GardenLevel = _farmObject.Level.CurrentLevel;
+            saveData.SaveData(SavedData);
+        }
     }
 
     private void CalculatingTime(float secondsPassed)
     {
-        int timeProductionLeft = (int)((_savedObject.ProductionTime - (_savedObject.ProductionTime * _savedObject.—urrentContent.ProductionStage)));
-        int timeWaterLeft = (int)(((_savedObject.ProductionTime / 3f) - ((_savedObject.ProductionTime / 3f) * _savedObject.WaterLevel)));
+        int timeProductionLeft = (int)((_farmObject.ProductionTime - (_farmObject.ProductionTime * _farmObject.—urrentContent.ProductionStage)));
+        int timeWaterLeft = (int)(((_farmObject.ProductionTime / 3f) - ((_farmObject.ProductionTime / 3f) * _farmObject.WaterLevel)));
 
         if (timeWaterLeft >= timeProductionLeft)
         {
@@ -68,8 +73,8 @@ public class FarmData : AbstractSavedObject<AbstractFarmObject>
             {
                 SavedData.ProductionStage = 1f;
                 SavedData.CanCollect = true;
-                SavedData.WaterLevel -= timeProductionLeft * (1f / (_savedObject.ProductionTime / 3f));
-                SpoilTime(secondsPassed - timeProductionLeft, _savedObject.ProductionTime);
+                SavedData.WaterLevel -= timeProductionLeft * (1f / (_farmObject.ProductionTime / 3f));
+                SpoilTime(secondsPassed - timeProductionLeft, _farmObject.ProductionTime);
             }
             else
             {
@@ -81,8 +86,8 @@ public class FarmData : AbstractSavedObject<AbstractFarmObject>
             if (secondsPassed >= timeWaterLeft)
             {
                 SavedData.WaterLevel = 0f;
-                SavedData.ProductionStage += timeWaterLeft * (1f / _savedObject.ProductionTime);
-                SpoilTime(secondsPassed - timeWaterLeft, _savedObject.ProductionTime);
+                SavedData.ProductionStage += timeWaterLeft * (1f / _farmObject.ProductionTime);
+                SpoilTime(secondsPassed - timeWaterLeft, _farmObject.ProductionTime);
             }
             else
             {
@@ -93,8 +98,8 @@ public class FarmData : AbstractSavedObject<AbstractFarmObject>
 
     private void CalculatingStage(float secondsPassed)
     {
-        SavedData.WaterLevel -= secondsPassed * (1f / (_savedObject.ProductionTime / 3f));
-        SavedData.ProductionStage += secondsPassed * (1f / _savedObject.ProductionTime);
+        SavedData.WaterLevel -= secondsPassed * (1f / (_farmObject.ProductionTime / 3f));
+        SavedData.ProductionStage += secondsPassed * (1f / _farmObject.ProductionTime);
     }
 
     private void Under—onstruction(float secondsPassed, float timeToBuild)
@@ -124,12 +129,12 @@ public class FarmData : AbstractSavedObject<AbstractFarmObject>
             SavedData.ProductionStage = 0f;
             SavedData.CanCollect = false;
             SavedData.WaterLevel = 0f;
-            SavedData.Spoil = false;
+            SavedData.IsSpoil = false;
             SavedData.SpoilTime = 0f;
         }
         else
         {
-            SavedData.Spoil = true;
+            SavedData.IsSpoil = true;
             SavedData.SpoilTime = spoilTime - secondsPassed;
         }
     }
@@ -141,7 +146,7 @@ public class Data
     public string   SaveTime;
     public bool     Occupied;
     public float    WaterLevel;
-    public bool     Spoil;
+    public bool     IsSpoil;
     public float    SpoilTime;
     public float    ProductionStage;
     public bool     CanCollect;

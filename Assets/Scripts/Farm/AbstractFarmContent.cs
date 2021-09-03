@@ -10,8 +10,8 @@ public abstract class AbstractFarmContent : MonoBehaviour
     public float ProductionStage => _productionStage;
     public bool CanCollect => _canCollect;
 
-    private float _productionStage;
-    private bool _canCollect;
+    private float _productionStage = 0f;
+    private bool _canCollect = false;
 
     public void Init(float productionStage, bool canCollect)
     {

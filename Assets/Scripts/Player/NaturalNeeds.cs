@@ -5,31 +5,32 @@ using UnityEngine.Events;
 
 public class NaturalNeeds : MonoBehaviour
 {
-    public Characteristic Energy => _energy;
-    public Characteristic Thirst => _thirst;
-    public Characteristic Hunger => _hunger;
+    public float Energy => _energy;
+    public float Thirst => _thirst;
+    public float Hunger => _hunger;
 
     [SerializeField] private UnityEvent<float, float, float> Events;
-    [SerializeField] private Characteristic _energy;
-    [SerializeField] private Characteristic _thirst;
-    [SerializeField] private Characteristic _hunger;
+    [SerializeField] private float _energy;
+    [SerializeField] private float _thirst;
+    [SerializeField] private float _hunger;
     [SerializeField] private PlayerCharacteristics _characteristics;
 
     private void Awake()
     {
-        Events?.Invoke(_energy.Value / _energy.MaxValue, _hunger.Value / _hunger.MaxValue, _thirst.Value / _thirst.MaxValue);
+        Events?.Invoke(_energy, _hunger, _thirst);
         StartCoroutine(ConsumptionOfNaturalNeeds());
     }
 
     private IEnumerator ConsumptionOfNaturalNeeds()
     {
+        var fullDay = TimeController.Instance.FullDay;
         while (true)
         {
-            yield return new WaitForSeconds(2f);
-            _hunger.Value -= (0.05f - ((_characteristics.Stamina.Value * 3) / 1000));
-            _thirst.Value -= (0.1f - ((_characteristics.Stamina.Value * 6) / 1000));
-            _energy.Value -= (_hunger.Value - _thirst.Value) / 100;
-            Events?.Invoke(_energy.Value / _energy.MaxValue, _hunger.Value / _hunger.MaxValue, _thirst.Value / _thirst.MaxValue);
+            yield return new WaitForSeconds(1f);
+            _hunger -= (0.05f - ((_characteristics.Stamina.Value * 3) / 1000));
+            _thirst -= (0.1f - ((_characteristics.Stamina.Value * 6) / 1000));
+            _energy -= (1f / fullDay) + (((1f - _hunger) + (1f - _thirst)) / 100f);
+            Events?.Invoke(_energy, _hunger, _thirst);
         }
     }
 }

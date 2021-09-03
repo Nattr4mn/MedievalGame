@@ -61,11 +61,10 @@ public abstract class AbstractFarmUI : MonoBehaviour
 
     public void PourWater()
     {
-        var bucketValue = _player.Items.Bucket.Value;
-        if (bucketValue > 0f)
+        var bucketValue = _player.Items.Bucket;
+        if (_player.Items.TryEmptyTheBucket())
         {
             _currentFarmObject.AddWater(bucketValue);
-            _player.Items.Bucket.Value = 0f;
         }
         else
         {
@@ -73,7 +72,7 @@ public abstract class AbstractFarmUI : MonoBehaviour
         }
     }
 
-    private void PanelsEnable(bool state)
+    public void PanelsEnable(bool state)
     {
         _statusPanel.SetActive(state);
         _buttonsPanel.SetActive(state);
@@ -82,15 +81,18 @@ public abstract class AbstractFarmUI : MonoBehaviour
     private void Collecting()
     {
         var playerLevel = _player.Level.Level;
-        var playerEnergy = _player.NaturalNeeds.Energy.Value;
+        var playerEnergy = _player.NaturalNeeds.Energy;
+        var playerLuck= _player.Characteristics.Luck.Value;
         int experience = 0;
+        Player.Input.Collecting();
 
         InputUI.Instance.Action -= Collecting;
         PanelsEnable(false);
-        var product = _currentFarmObject.Collecting(playerLevel, playerEnergy, out experience);
+        var product = _currentFarmObject.Collecting(playerLevel, playerLuck, playerEnergy, out experience);
         _player.Level.AddExperience(experience);
-        var harvestTuple = new Tuple<Sprite, float>(InputUI.Instance.Reward.ExpIcon, product.Item2);
-        var expTuple = new Tuple<Sprite, float>(product.Item1.UIIcon, experience);
+
+        var harvestTuple = new Tuple<Sprite, float>(product.Item1.UIIcon, product.Item2);
+        var expTuple = new Tuple<Sprite, float>(InputUI.Instance.Reward.ExpIcon, experience);
         InputUI.Instance.Reward.ShowRewards(harvestTuple, expTuple);
     }
 }

@@ -5,30 +5,29 @@ using UnityEngine;
 
 public class PlayerItems : MonoBehaviour
 {
-    public Characteristic Food => _food;
-    public Characteristic Gold => _gold;
-    public Characteristic Bucket => _bucket;
+    public int Food => _food;
+    public int Gold => _gold;
+    public float Bucket => _bucket;
 
-    [SerializeField] private Characteristic _food;
-    [SerializeField] private Characteristic _gold;
-    [SerializeField] private Characteristic _bucket;
+    [SerializeField] private int _food;
+    [SerializeField] private int _gold;
+    [SerializeField] private float _bucket;
 
     public void FillBucket()
     {
-        _bucket.Value = Random.Range(0.5f, 1f);
-    }
-
-    public IItem GetItem(List<IItem> list, string name)
+        _bucket = Random.Range(0.5f, 1f);
+    }    
+    
+    public bool TryEmptyTheBucket()
     {
-        return list.FirstOrDefault(item => item.Name == name);
-    }
-
-    public void ReplenishStocks(List<IItem> list, string name, int count)
-    {
-        foreach (var item in list)
+        if (_bucket > 0)
         {
-            if (item.Name == name)
-                item.Count += count;
+            _bucket = 0;
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

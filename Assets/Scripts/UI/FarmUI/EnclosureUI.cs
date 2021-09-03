@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnclosureUI //: AbstractFarmUI
+public class EnclosureUI : AbstractFarmUI
 {
     //public override IItem ExtractedResource { get => _currentAnimal; set => _currentAnimal = (Animal)value; }
     //public override List<IItem> ItemsList => _animalsList.Select(animal => (IItem)animal).ToList();
@@ -51,7 +51,7 @@ public class EnclosureUI //: AbstractFarmUI
     //        Error.Init("Недостаточно ресурсов!");
     //    }
     //}
-    
+
     //public override IEnumerator SliderUpdate()
     //{
     //    AnimalEnclosure animalEnclosure = (AnimalEnclosure)СurrentFarmObject;
@@ -65,4 +65,18 @@ public class EnclosureUI //: AbstractFarmUI
     //        yield return new WaitForSeconds(0.01f);
     //    }
     //}
+    public override void Fill(string objectName)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void SelectionWindow()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override IEnumerator SliderUpdate()
+    {
+        throw new System.NotImplementedException();
+    }
 }

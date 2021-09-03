@@ -12,12 +12,10 @@ public class SeedProduct : ScriptableObject, IFarmProduct
         get => _quantity;
         set
         {
-            if (value >= _maxQuantity)
-                _quantity = 0;
-            else if (_quantity + value > _maxQuantity)
+            if (value > _maxQuantity)
                 _quantity = _maxQuantity;
             else
-                _quantity += value;
+                _quantity = value;
         }
     }
     public int MaxQuantity => _maxQuantity;

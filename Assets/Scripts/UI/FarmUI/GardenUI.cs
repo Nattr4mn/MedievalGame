@@ -10,13 +10,13 @@ public class GardenUI : AbstractFarmUI
     public override void Fill(string objectName)
     {
         InputUI.Instance.ActionButton.gameObject.SetActive(true);
-        if (Player.Items.Bucket.Value > 0)
+        var bucket = Player.Items.Bucket;
+        if (Player.Items.TryEmptyTheBucket())
         {
-            if (ÑurrentFarmObject.TryFill(objectName, Player.Items.Bucket.Value))
+            if (ÑurrentFarmObject.TryFill(objectName, bucket))
             {
                 Player.Input.Collecting();
                 InputUI.Instance.Action -= SelectionWindow;
-                Player.Items.Bucket.Value = 0f;
                 Selection.gameObject.SetActive(false);
             }
             else
@@ -53,12 +53,14 @@ public class GardenUI : AbstractFarmUI
 
     public override IEnumerator SliderUpdate()
     {
-        while (ÑurrentFarmObject != null)
+        while (ÑurrentFarmObject != null && ÑurrentFarmObject?.ÑurrentContent.ProductionStage < 1f)
         {
             _statusPanel.transform.position = Camera.main.WorldToScreenPoint(ÑurrentFarmObject.transform.position);
             _productionSlider.value = ÑurrentFarmObject.ÑurrentContent.ProductionStage;
             _waterSlider.value = ÑurrentFarmObject.WaterLevel;
             yield return new WaitForSeconds(0.01f);
         }
+
+        PanelsEnable(false);
     }
 }
