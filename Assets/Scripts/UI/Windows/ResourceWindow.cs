@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using MedievalGame.Player;
 using UnityEngine;
 
 public class ResourceWindow : MonoBehaviour

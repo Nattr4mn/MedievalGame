@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140d810f3cb83e04fae1b3335b04152b, type: 3}
+  m_Name: ProductDataBase
+  m_EditorClassIdentifier: 
+  _animals:
+  - {fileID: 11400000, guid: 7c1d2fbb375b2ac43a042eddc762f481, type: 2}
+  - {fileID: 11400000, guid: d51d6851114f2f347b5fd6ce22ef1c33, type: 2}
+  _crops:
+  - {fileID: 11400000, guid: 0aa08f2f30c478b43a1bbce8280dbc6f, type: 2}
+  - {fileID: 11400000, guid: 6a79c5fd5717ce648bb12466a3d60b20, type: 2}
+  - {fileID: 11400000, guid: 72520c136156c8f4f82b1047a9633057, type: 2}
+  - {fileID: 11400000, guid: f482ec6dd72dde54dbd74bc4880d69f0, type: 2}
+  _meats:
+  - {fileID: 11400000, guid: e8f0647e86cdb7e4c9bf2b290e282b20, type: 2}
+  - {fileID: 11400000, guid: 15fe5b2196fed3d4da0179d8c2765231, type: 2}
+  _seeds:
+  - {fileID: 11400000, guid: d75811b3564e9994992704f5810b4b20, type: 2}
+  - {fileID: 11400000, guid: 170dd75b990f57242bc66bfb9c573b2e, type: 2}
+  - {fileID: 11400000, guid: 809c8e39277e8c540b5e2665fa72690d, type: 2}
+  - {fileID: 11400000, guid: d7e1ea47a61b5c343be7092fe12c885e, type: 2}

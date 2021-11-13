@@ -10,6 +10,11 @@ public class FarmObjectLevel : MonoBehaviour
     [SerializeField] private int _maxLevel = 5;
     private int _currentLevel = 0;
 
+    public void Init(int currentLevel)
+    {
+        _currentLevel = currentLevel;
+    }
+
     public void LevelUp()
     {
         print(_currentLevel);

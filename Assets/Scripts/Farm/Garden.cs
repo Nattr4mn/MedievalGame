@@ -1,90 +1,83 @@
-using System;
-using System.Collections;
-using System.Linq;
-using UnityEngine;
+//using System;
+//using System.Collections;
+//using System.Linq;
+//using UnityEngine;
 
-public class Garden : AbstractFarmObject
-{
-    public override void Init(Data farmData)
-    {
-        throw new System.NotImplementedException();
-    }
+//[RequireComponent(typeof(GardenData))]
+//public class Garden : AbstractFarmObject
+//{
+//    //private float _growthTime;
+//    //private float _timeToDehumidification;
 
-    public override Tuple<IFarmProduct, int> Collecting(int playerLevel, int playerLuck, float playerEnergy, out int playerExperience)
-    {
-        SeedProduct product = (SeedProduct)_currentContent.Product;
-        var seed = UnityEngine.Random.Range(8f, 16f) + playerLuck;
-        var harvest = UnityEngine.Random.Range(5f, 10f) + playerLuck;
+//    //public override void Init()
+//    //{ 
+//    //    _growthTime = ProductionTime;
+//    //    _timeToDehumidification = ProductionTime / 3f;
+//    //    if (Level.CurrentLevel > 0)
+//    //    {
+//    //        _growthTime = ProductionTime / (Level.CurrentLevel / Level.MaxLevel * 2);
+//    //    }
+//    //}
 
-        if (playerEnergy <= 0.5f)
-        {
-            harvest *= (0.5f + playerEnergy);
-        }
+//    //public override Tuple<IFarmProduct, int> Collecting(int playerLevel, int playerLuck, float playerEnergy, out float playerExperience)
+//    //{
+//    //    SeedProduct product = (SeedProduct)ÑurrentContent.Product;
+//    //    var seed = UnityEngine.Random.Range(8f, 16f) + playerLuck;
+//    //    product.Quantity += (int)seed;
+//    //    return base.Collecting(playerLevel, playerLuck, playerEnergy, out playerExperience);
+//    //}
 
-        product.Quantity += (int)seed;
-        product.DerivedProduct.Quantity += (int)harvest;
-        playerExperience = (int)(harvest / (2 + playerLevel));
-        Clear();
-        InteractiveObject.Events?.Invoke(InteractiveObject);
-        return new Tuple<IFarmProduct, int>(product, (int)harvest);
-    }
+//    //public override bool TryFill(string productName, float water)
+//    //{
+//    //    ÑurrentContent = (GardenContent)ContentList.Where(content => content.Product.ProductName == productName).FirstOrDefault();
 
-    public override bool TryFill(string objectName, float water)
-    {
-        _currentContent = (GardenContent)ContentList.Where(content => content.Product.ProductName == objectName).FirstOrDefault();
+//    //    SeedProduct seed = (SeedProduct)ÑurrentContent.Product;
+//    //    if (seed.Quantity >= 10)
+//    //    {
+//    //        seed.Quantity -= 10;
+//    //        Fill(water);
+//    //        return true;
+//    //    }
+//    //    else
+//    //    {
+//    //        return false;
+//    //    }
+//    //}
 
-        SeedProduct seed = (SeedProduct)_currentContent.Product;
-        if (seed.Quantity >= 10)
-        {
-            _waterLevel = water;
-            _occupied = true;
-            _currentContent.gameObject.SetActive(true);
-            seed.Quantity -= 10;
-            StartProcessOfGrowth();
-            InteractiveObject.Events?.Invoke(InteractiveObject);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+//    //public override void StartProcessOfGrowth()
+//    //{
+//    //    StartCoroutine(ProcessOfGrowth());
+//    //}
 
-    public override void StartProcessOfGrowth()
-    {
-        StartCoroutine(ProcessOfGrowth());
-    }
+//    //private IEnumerator ProcessOfGrowth()
+//    //{
+//    //    while (!ÑurrentContent.CanCollect && Occupied)
+//    //    {
+//    //        yield return new WaitForSeconds(1f/30f);
 
-    private IEnumerator ProcessOfGrowth()
-    {
-        while (!_currentContent.CanCollect && _occupied)
-        {
-            yield return new WaitForSeconds(1f/30f);
+//    //        if (WaterLevel > 0)
+//    //        {
+//    //            AddWater(-(1f / _timeToDehumidification));
+//    //            ÑurrentContent.Growth(1f / _growthTime);
+//    //        }
+//    //        else if (!Spoiling.IsSpoil)
+//    //        {
+//    //            Spoiling.StartSpoil(() =>
+//    //            {
+//    //                if (WaterLevel >= 0)
+//    //                    StartProcessOfGrowth();
 
-            if (_waterLevel > 0)
-            {
-                _waterLevel -= 1f / ((ProductionTime) / 3f);
-                _currentContent.Growth(1f / (ProductionTime));
-            }
-            else if (!Spoiling.IsSpoil)
-            {
-                Spoiling.StartSpoil(() =>
-                {
-                    if (_waterLevel >= 0)
-                        StartProcessOfGrowth();
+//    //                return WaterLevel <= 0;
+//    //            });
+//    //            yield break;
+//    //        }
+//    //    }
 
-                    return _waterLevel <= 0;
-                });
-                yield break;
-            }
-        }
+//    //    InteractiveObject.Events.Invoke(InteractiveObject);
 
-        InteractiveObject.Events.Invoke(InteractiveObject);
-
-        if (_currentContent.CanCollect)
-        {
-            Spoiling.StartSpoil(() => _currentContent != null);
-
-        }
-    }
-}
+//    //    if (ÑurrentContent.CanCollect)
+//    //    {
+//    //        Spoiling.StartSpoil(() => ÑurrentContent != null);
+//    //    }
+//    //}
+//}

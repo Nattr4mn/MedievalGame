@@ -20,24 +20,34 @@ public class Structure : MonoBehaviour
     private float _currentConstructionTime = 0f;
     private GameObject _structure;
 
+    public void Init(float currentConstructionTime)
+    {
+        _currentConstructionTime = currentConstructionTime;
+    }
+
     private void Start()
     {
         _structure = gameObject;
         _structure.SetActive(_isBuilt);
     }
 
+    public void Build()
+    {
+        StartCoroutine(Building());
+    }
+
     public void Build(int playerGold, int playerLevel)
     {
         if (playerGold >= _price && playerLevel >= _levelToBuild && !_isBuilt)
         {
-            _under—onstruction = true;
-            StartCoroutine(Building());
+            Build();
         }
     }
 
     private IEnumerator Building()
     {
-        while(_currentConstructionTime < _timeToBuild)
+        _under—onstruction = true;
+        while (_currentConstructionTime < _timeToBuild)
         {
             yield return new WaitForSeconds(0.1f);
             _currentConstructionTime += _timeToBuild / 600;

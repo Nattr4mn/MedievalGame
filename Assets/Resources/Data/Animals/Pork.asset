@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12e2caf025c97d440b5e0d3ada0b1973, type: 3}
   m_Name: Pork
   m_EditorClassIdentifier: 
-  _name: Pork
-  _quantity: 0
-  _maxQuantity: 9999
-  _price: 20
-  _uiIcon: {fileID: 21300000, guid: 76814f8c65076c14eb9d0e80f9fa22fd, type: 3}
+  _meatType: 1
+  _basePrice: 0
+  _meatPreviewSprite: {fileID: 0}

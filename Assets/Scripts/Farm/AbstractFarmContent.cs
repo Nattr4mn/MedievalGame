@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using MedievalGame.Interface;
 using UnityEngine;
 
 public abstract class AbstractFarmContent : MonoBehaviour
 {
     public abstract string Name { get; }
-    public abstract IFarmProduct Product { get; }
+    public abstract IProduct Product { get; }
     public float ProductionStage => _productionStage;
     public bool CanCollect => _canCollect;
 

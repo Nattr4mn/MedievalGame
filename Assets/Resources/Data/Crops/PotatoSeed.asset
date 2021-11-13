@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cf2e61a30e8cfd468ea25719b498ebe, type: 3}
+  m_Script: {fileID: 11500000, guid: d71b144c6cdce8e46811d9fdcd48c5be, type: 3}
   m_Name: PotatoSeed
   m_EditorClassIdentifier: 
-  _cropName: PotatoSeed
-  _price: 7
-  _quantity: 100
-  _maxQuantity: 99999
-  _crop: {fileID: 11400000, guid: 6a79c5fd5717ce648bb12466a3d60b20, type: 2}
-  _uiIcon: {fileID: 21300000, guid: 80dc9437cef5bec4ab558b6f1a2c064d, type: 3}
+  _seedType: 2
+  _basePrice: 0
+  _seedPreviewSprite: {fileID: 0}

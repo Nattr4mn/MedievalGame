@@ -23,7 +23,6 @@ public class Save<T> : MonoBehaviour
     {
         if (File.Exists(_path))
         {
-            print(_path);
             _data = JsonUtility.FromJson<T>(File.ReadAllText(_path));
         }
         return _data;

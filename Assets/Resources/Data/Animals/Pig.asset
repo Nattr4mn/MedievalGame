@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9598a6331cacd344493fff805509d148, type: 3}
   m_Name: Pig
   m_EditorClassIdentifier: 
-  _animalName: Pig
-  _price: 0
-  "_food\u0421onsumed": {fileID: 11400000, guid: 0aa08f2f30c478b43a1bbce8280dbc6f, type: 2}
-  _meat: {fileID: 11400000, guid: 15fe5b2196fed3d4da0179d8c2765231, type: 2}
-  _uiIcon: {fileID: 21300000, guid: 76814f8c65076c14eb9d0e80f9fa22fd, type: 3}
+  _animalType: 1
+  _basePrice: 0
+  _animalPreviewSprite: {fileID: 0}

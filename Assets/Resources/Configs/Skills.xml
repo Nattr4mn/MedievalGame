@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<skills>
+    <skill name="Charisma">0</skill>
+    <skill name="Luck">1</skill>
+    <skill name="Stamina">2</skill>
+</skills>
