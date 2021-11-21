@@ -3,9 +3,11 @@ namespace MedievalGame.Model
     public class Experience
     {
         public float CurrentExperience => _experience;
+        public bool ExperienceIsMax => _experienceIsMax;
 
         private float _experience = 0f;
         private float _maxExperience;
+        private bool _experienceIsMax = false;
 
         public Experience() { }
 
@@ -22,12 +24,18 @@ namespace MedievalGame.Model
                 _experience += experience;
                 if (_experience >= _maxExperience)
                 {
-                    _experience -= _maxExperience;
-                    return true;
+                    _experienceIsMax = true;
                 }
+                return true;
             }
 
             return false;
+        }
+
+        public void ResetExperience()
+        {
+            _experience -= _maxExperience;
+            _experienceIsMax = false;
         }
 
         public void SetMaxExperience(int playerLevel)
